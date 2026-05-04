@@ -2,6 +2,9 @@ from pydantic import BaseModel, Field, constr
 from datetime import date
 from typing import Optional
 
+from aplicacion.dtos.dto_categoria import CategoriaResponse
+from aplicacion.dtos.dto_modalidad_liquidacion import ModalidadLiquidacionResponse
+
 
 # 🔹 Base (campos comunes)
 class LegajoBase(BaseModel):
@@ -10,7 +13,7 @@ class LegajoBase(BaseModel):
     cuil: constr(pattern=r'^\d{2}-?\d{8}-?\d{1}$')
     sexo: constr(pattern=r'^[MF]$')
     categoria_id: int
-    #modalidad_liquidacion_id: int
+    modalidad_liquidacion_id: int
     activo: bool = True
     sac: Optional[bool] = None
 
@@ -35,6 +38,8 @@ class LegajoUpdate(BaseModel):
 # 🔹 DTO de respuesta (response)
 class LegajoResponse(LegajoBase):
     id: int
+    categoria: CategoriaResponse | None = None  
+    modalidad_liquidacion: ModalidadLiquidacionResponse | None = None  
 
     class Config:
         from_attributes = True 

@@ -1,5 +1,8 @@
 from datetime import date
 
+from domain.entidades.categoria import Categoria
+from domain.entidades.modalidad_liquidacion import ModalidadLiquidacion
+
 
 class Legajo:
 
@@ -11,7 +14,9 @@ class Legajo:
         sexo: str,
         cuil: str,
         categoria_id: int,
-       # modalidad_liquidacion_id: int,
+        categoria : Categoria,
+        modalidad_liquidacion_id: int,
+        modalidad_liquidacion : ModalidadLiquidacion,
         activo: bool = True,
         sac: bool =True
     ):
@@ -21,7 +26,9 @@ class Legajo:
         self.sexo= sexo
         self.cuil = cuil
         self.categoria_id = categoria_id
-       # self.modalidad_liquidacion_id = modalidad_liquidacion_id
+        self.categoria= categoria
+        self.modalidad_liquidacion_id = modalidad_liquidacion_id
+        self.modalidad_liquidacion = modalidad_liquidacion
         self.activo = activo
         self.sac = sac
 

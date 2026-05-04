@@ -1,3 +1,4 @@
+from domain.entidades.categoria import Categoria
 from domain.entidades.legajo import Legajo
 from domain.repositorios.legajo_repositorio import LegajoRepository
 
@@ -22,7 +23,9 @@ class LegajoService:
             sexo=data.sexo,
             cuil=data.cuil,
             categoria_id=data.categoria_id,
+            categoria =  None,
             modalidad_liquidacion_id=data.modalidad_liquidacion_id,
+            modalidad_liquidacion= None,
             activo=True
         )
       

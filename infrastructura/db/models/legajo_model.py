@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from infrastructura.db.models.categoria_model import CategoriaModel
 from infrastructura.db.session import Base
 
 
@@ -26,7 +25,7 @@ class LegajoModel(Base):
 
     # 🔹 Relaciones (opcional pero recomendado)
     categoria = relationship("CategoriaModel", back_populates="legajos")
-    #modalidad = relationship("ModalidadLiquidacionModel", back_populates="legajos")
+    modalidad_liquidacion = relationship("ModalidadLiquidacionModel", back_populates="legajos")
 
     # 🔹 Relación con conceptos del empleado (preliquidación)
     #conceptos = relationship("LegajoConceptoModel", back_populates="legajo")

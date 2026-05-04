@@ -1,7 +1,12 @@
 from sqlalchemy.exc import SQLAlchemyError
+from domain.entidades.modalidad_liquidacion import ModalidadLiquidacion
 from domain.repositorios.legajo_repositorio import LegajoRepository
 from domain.entidades.legajo import Legajo
 from infrastructura.db.models.legajo_model import LegajoModel
+from infrastructura.db.models.categoria_model import CategoriaModel
+from sqlalchemy.orm import joinedload
+
+from infrastructura.db.models.modalidad_liquidacion import ModalidadLiquidacionModel
 
 
 class MySQLLegajoRepository(LegajoRepository):
@@ -19,7 +24,12 @@ class MySQLLegajoRepository(LegajoRepository):
 
     def listar(self):
         #try:
-            modelos = self.db.query(LegajoModel).all()
+            modelos = (
+                self.db.query(LegajoModel)
+                .options(joinedload(LegajoModel.categoria)) 
+                .options(joinedload(LegajoModel.modalidad_liquidacion))  # 🔥 clav
+                .all()
+    )
     
             return [self._to_entity(m) for m in modelos]
 
@@ -39,7 +49,7 @@ class MySQLLegajoRepository(LegajoRepository):
         model.activo = legajo.activo
         model.sac =legajo.sac
         model.categoria_id = legajo.categoria_id
-        #model.modalidad_liquidacion_id = legajo.modalidad_liquidacion_id
+        model.modalidad_liquidacion_id = legajo.modalidad_liquidacion_id
       
         try:
             self.db.add(model)
@@ -54,18 +64,32 @@ class MySQLLegajoRepository(LegajoRepository):
         return self._to_entity(model)
 
     # 🔥 mapper interno
-    def _to_entity(self, model):
-        if not model:
-            return None
-        print(model.__dict__) 
-        return Legajo(
-            id=model.id,
-            apellido=model.apellido,
-            nombre=model.nombre,
-            sexo =model.sexo,
-            cuil=model.cuil,
-            categoria_id=model.categoria_id,
-            #modalidad_liquidacion_id=model.modalidad_liquidacion_id,
-            activo=model.activo,
-            sac = model.sac
-        )
+    def _to_entity(self, m: LegajoModel):
+        categoria = None
+
+        if m.categoria:
+            categoria = CategoriaModel(
+                id=m.categoria.id,
+                nombre = m.categoria.nombre,
+                descripcion=m.categoria.descripcion
+            )
+        if m.modalidad_liquidacion:
+            modalidad_liquidacion = ModalidadLiquidacionModel(
+                id=m.modalidad_liquidacion.id,
+                nombre = m.modalidad_liquidacion.nombre
+            ) 
+
+            return Legajo(
+                id=m.id,
+                apellido=m.apellido,
+                nombre=m.nombre,
+                sexo=m.sexo,
+                cuil=m.cuil,
+                categoria_id=m.categoria_id,
+                categoria=categoria,
+                modalidad_liquidacion_id= m.modalidad_liquidacion_id,
+                modalidad_liquidacion=modalidad_liquidacion,
+                activo=m.activo,
+                sac = m.sac
+            )
+    
