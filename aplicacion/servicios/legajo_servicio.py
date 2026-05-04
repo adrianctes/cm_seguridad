@@ -1,4 +1,3 @@
-from domain.entidades.categoria import Categoria
 from domain.entidades.legajo import Legajo
 from domain.repositorios.legajo_repositorio import LegajoRepository
 
@@ -37,6 +36,7 @@ class LegajoService:
     # =========================
     def obtener(self, legajo_id: int):
             legajo = self.legajo_repo.obtener_por_id(legajo_id)
+            
             if not legajo:
                 raise ValueError("Legajo no encontrado")
             return legajo

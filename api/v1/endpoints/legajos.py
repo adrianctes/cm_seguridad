@@ -60,9 +60,14 @@ def actualizar_legajo(
     data: LegajoUpdate,
     repo = Depends(get_legajo_repository)
 ):
-    service = LegajoService(repo)
-    return service.actualizar(legajo_id, data)
-
+    try:
+        service = LegajoService(repo)
+        return service.actualizar(legajo_id, data)
+    except Exception as ex:
+            raise HTTPException(
+                status_code=400,
+                detail=str(ex)
+            )
 
 # 🔹 ELIMINAR (soft delete)
 @router.delete("/{legajo_id}", response_model=LegajoResponse)

@@ -1,5 +1,4 @@
 from sqlalchemy.exc import SQLAlchemyError
-from domain.entidades.modalidad_liquidacion import ModalidadLiquidacion
 from domain.repositorios.legajo_repositorio import LegajoRepository
 from domain.entidades.legajo import Legajo
 from infrastructura.db.models.legajo_model import LegajoModel
@@ -70,7 +69,7 @@ class MySQLLegajoRepository(LegajoRepository):
             print(model.__dict__)
         except SQLAlchemyError as e:
             error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]
-            raise Exception(e._message)    
+            raise Exception(error_msg)    
 
 
         return self._to_entity(model)
