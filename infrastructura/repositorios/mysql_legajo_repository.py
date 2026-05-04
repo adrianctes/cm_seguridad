@@ -15,8 +15,15 @@ class MySQLLegajoRepository(LegajoRepository):
         self.db = db
 
     def obtener_por_id(self, legajo_id: int):
-        model = self.db.query(LegajoModel).filter_by(id=legajo_id).first()
-        return self._to_entity(model)
+        try :
+            model = self.db.query(LegajoModel).filter_by(id=legajo_id).first()
+            if not model:
+                raise ValueError("Legajo no encontrado")
+            
+            return self._to_entity(model)
+        except SQLAlchemyError as e:
+            error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]
+            raise Exception(f"Error legajo no existe {error_msg}.")    
 
     def obtener_por_cuil(self, cuil: str):
         model = self.db.query(LegajoModel).filter_by(cuil=cuil).first()
@@ -27,7 +34,7 @@ class MySQLLegajoRepository(LegajoRepository):
             modelos = (
                 self.db.query(LegajoModel)
                 .options(joinedload(LegajoModel.categoria)) 
-                .options(joinedload(LegajoModel.modalidad_liquidacion))  # 🔥 clav
+                .options(joinedload(LegajoModel.modalidad_liquidacion))
                 .all()
     )
     
@@ -37,11 +44,12 @@ class MySQLLegajoRepository(LegajoRepository):
         #    raise Exception("Error al consultar legajos en base de datos")
         
     def guardar(self, legajo: Legajo):
+        
         if legajo.id:
-            model = self.db.query(LegajoModel).get(legajo.id)
+          model = self.db.query(LegajoModel).get(legajo.id)
         else:
             model = LegajoModel()
-
+      
         model.apellido = legajo.apellido
         model.nombre = legajo.nombre
         model.sexo = legajo.sexo
@@ -50,15 +58,19 @@ class MySQLLegajoRepository(LegajoRepository):
         model.sac =legajo.sac
         model.categoria_id = legajo.categoria_id
         model.modalidad_liquidacion_id = legajo.modalidad_liquidacion_id
+       # model.categoria =legajo.categoria
+        #model.modalidad_liquidacion =legajo.modalidad_liquidacion
+       
       
         try:
-            self.db.add(model)
+            if model.id is None :
+              self.db.add(model)
             self.db.commit()
             self.db.refresh(model)
-     
+            print(model.__dict__)
         except SQLAlchemyError as e:
             error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]
-            raise Exception(f"Error al crear legajo en base de datos {error_msg}")    
+            raise Exception(e._message)    
 
 
         return self._to_entity(model)
@@ -66,8 +78,9 @@ class MySQLLegajoRepository(LegajoRepository):
     # 🔥 mapper interno
     def _to_entity(self, m: LegajoModel):
         categoria = None
+        modalidad_liquidacion = None
 
-        if m.categoria:
+        if m.categoria_id:
             categoria = CategoriaModel(
                 id=m.categoria.id,
                 nombre = m.categoria.nombre,
@@ -86,8 +99,8 @@ class MySQLLegajoRepository(LegajoRepository):
                 sexo=m.sexo,
                 cuil=m.cuil,
                 categoria_id=m.categoria_id,
-                categoria=categoria,
                 modalidad_liquidacion_id= m.modalidad_liquidacion_id,
+                categoria=categoria,
                 modalidad_liquidacion=modalidad_liquidacion,
                 activo=m.activo,
                 sac = m.sac

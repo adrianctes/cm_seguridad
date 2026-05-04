@@ -14,9 +14,9 @@ class Legajo:
         sexo: str,
         cuil: str,
         categoria_id: int,
-        categoria : Categoria,
         modalidad_liquidacion_id: int,
-        modalidad_liquidacion : ModalidadLiquidacion,
+        categoria : Categoria  | None = None,
+        modalidad_liquidacion : ModalidadLiquidacion | None = None,
         activo: bool = True,
         sac: bool =True
     ):

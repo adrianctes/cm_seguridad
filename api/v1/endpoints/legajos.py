@@ -70,5 +70,11 @@ def eliminar_legajo(
     legajo_id: int,
     repo = Depends(get_legajo_repository)
 ):
-    service = LegajoService(repo)
-    return service.eliminar(legajo_id)
+        try :
+            service = LegajoService(repo)
+            return service.eliminar(legajo_id)
+        except Exception as ex:
+            raise HTTPException(
+                status_code=400,
+                detail=str(ex)
+            )
