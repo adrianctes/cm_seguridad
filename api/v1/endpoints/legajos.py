@@ -7,9 +7,11 @@ from application.dtos.dto_legajo import (
     LegajoResponse
 )
 from application.services.legajo_service import LegajoService
-from core.dependencias import get_legajo_repository
+from core.dependencias import get_current_user, get_legajo_repository
 
-router = APIRouter(prefix="/legajos", tags=["Legajos"])
+router = APIRouter(
+    prefix="/legajos",
+    tags=["Legajos"])
 
 
 # 🔹 CREAR

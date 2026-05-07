@@ -7,13 +7,13 @@ from typing import Optional
 
 class UsuarioCreate(BaseModel):
     username: str
-    password_hash: str
+    password: str
     activo: bool = True
 
 
 class UsuarioUpdate(BaseModel):
     username: Optional[str] = None
-    password_hash: Optional[str] = None
+    password: Optional[str] = None
     activo: Optional[bool] = None
 
 

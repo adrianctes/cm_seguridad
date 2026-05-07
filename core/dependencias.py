@@ -1,5 +1,7 @@
 # core/dependencies.py
 
+from urllib import request
+
 from fastapi import Depends
 from infrastructura.db.session import get_db
 from infrastructura.repositories.mysql_concepto_novedad_repository import MySQLConceptoNovedadRepository
@@ -9,7 +11,11 @@ from infrastructura.repositories.mysql_liquidacion_repository import MySQLLiquid
 from infrastructura.repositories.mysql_usuario_repository import MySQLUsuarioRepository
 from fastapi.security import OAuth2PasswordBearer
 from core.config import settings
-from jose import jwt
+from jose import JWTError, jwt
+from fastapi import Depends
+from fastapi import HTTPException
+
+
 
 def get_legajo_repository(db = Depends(get_db)):
     return MySQLLegajoRepository(db)
@@ -26,13 +32,8 @@ def get_concepto_novedad_repository(db = Depends(get_db)):
 def get_usuario_repository(db = Depends(get_db)):
     return MySQLUsuarioRepository(db)
 
-
-
-
-
-
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/auth/login"
+    tokenUrl="/api/v1/auth/login"
 )
 
 
@@ -40,10 +41,35 @@ def get_current_user(
     token: str = Depends(oauth2_scheme)
 ):
 
-    payload = jwt.decode(
-        token,
-        SECRET_KEY,
-        algorithms=[ALGORITHM]
-    )
+    # 🔴 OAuth2 ya valida esto, pero mejor mensaje
+    if not token:
+        raise HTTPException(
+            status_code=400,
+            detail="Falta token de autenticación",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
-    return payload
+    try:
+
+        payload = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM]
+        )
+
+        username = payload.get("sub")
+
+        if not username:
+            raise HTTPException(
+                status_code=401,
+                detail="Token inválido"
+            )
+
+        return payload
+
+    except JWTError:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Token inválido o expirado"
+        )

@@ -10,7 +10,9 @@ from application.dtos.dto_auth import (
 )
 
 from application.services.auth_service import AuthService
-from core.dependencias import get_current_user
+from core.dependencias import get_usuario_repository
+
+
 router = APIRouter(
     prefix="/auth",
     tags=["Auth"]
@@ -23,7 +25,7 @@ router = APIRouter(
 )
 def login(
     data: Login,
-    repo=Depends(get_current_user)
+    repo=Depends(get_usuario_repository)
 ):
 
     service = AuthService(repo)

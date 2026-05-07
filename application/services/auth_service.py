@@ -4,19 +4,21 @@ from core.security import (
     verify_password,
     create_access_token
 )
+from domain.repositories.usuario_repositorio_interface import UsuarioRepository
 
 
 class AuthService:
 
-    def __init__(self, usuario_repo):
-        self.usuario_repo = usuario_repo
+    def __init__(self, repo:UsuarioRepository) :
+         self.repo = repo
+
 
     def login(self, data):
 
-        usuario = self.usuario_repo.obtener_por_username(
+        usuario = self.repo.obtener_por_username(
             data.username
         )
-
+   
         if not usuario:
             raise Exception("Usuario inválido")
 
