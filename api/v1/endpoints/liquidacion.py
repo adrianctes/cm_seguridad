@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from application.dtos.dto_liquidacion import LiquidacionCreate, LiquidacionResponse, LiquidacionUpdate
+from application.dtos.dto_modalidad_liquidacion import LiquidacionUpdateValor
 from domain.entities.liquidacion import Liquidacion
 from core.dependencias import get_liquidacion_repository
 from application.services.liquidacion_service import LiquidacionService
@@ -24,10 +25,10 @@ def crear_liquidacion(
             detail=str(ex)
         )
     
-@router.put("/{id}", response_model=LiquidacionResponse)
-def actualizar(
+@router.patch("/{id}", response_model=LiquidacionResponse)
+def actualizar_valor(
     id: int,
-    data: LiquidacionUpdate,
+    data: LiquidacionUpdateValor,
     repo = Depends(get_liquidacion_repository)
 ):
     service = LiquidacionService(repo)
@@ -41,10 +42,7 @@ def actualizar(
         return result
 
     except Exception as ex:
-        raise HTTPException(
-            status_code=400,
-            detail=str(ex)
-        )
+        raise HTTPException(status_code=400, detail=str(ex))
 
 # 🔹 OBTENER
 @router.get("/{id}", response_model=LiquidacionResponse)

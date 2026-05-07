@@ -19,8 +19,7 @@ def crear(data: ConceptoCreate,
             status_code=422,
             detail=str(ex)
         )
-    repo = MySQLConceptoRepository(db)
-    return repo.crear(data)
+   
 
 
 @router.get("/", response_model=list[ConceptoResponse])
