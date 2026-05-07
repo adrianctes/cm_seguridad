@@ -1,5 +1,5 @@
-from domain.entidades.concepto import Concepto
-from domain.repositorios.concepto_repositorio import IConceptoRepository
+from domain.entities.concepto_entity import Concepto
+from domain.repositories.concepto_repositorio_interface import IConceptoRepository
 
 class ConceptoService:
 

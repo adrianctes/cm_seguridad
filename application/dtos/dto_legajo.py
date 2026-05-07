@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field, constr
 from datetime import date
 from typing import Optional
 
-from aplicacion.dtos.dto_categoria import CategoriaResponse
-from aplicacion.dtos.dto_modalidad_liquidacion import ModalidadLiquidacionResponse
+from application.dtos.dto_categoria import CategoriaResponse
+from application.dtos.dto_modalidad_liquidacion import ModalidadLiquidacionResponse
 
 
 # 🔹 Base (campos comunes)

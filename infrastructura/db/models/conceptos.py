@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
 from infrastructura.db.session import Base
 
 class ConceptoModel(Base):
@@ -11,3 +12,5 @@ class ConceptoModel(Base):
     es_remunerativo = Column(Boolean, default=True)
     activo = Column(Boolean, default=True)
     requiere_novedad = Column(Boolean, nullable=True)
+    
+    liquidaciones = relationship("LiquidacionModel", back_populates="concepto")

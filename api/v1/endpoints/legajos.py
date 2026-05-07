@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 
-from aplicacion.dtos.dto_legajo import (
+from application.dtos.dto_legajo import (
     LegajoCreate,
     LegajoUpdate,
     LegajoResponse
 )
-from aplicacion.servicios.legajo_servicio import LegajoService
+from application.services.legajo_service import LegajoService
 from core.dependencias import get_legajo_repository
 
 router = APIRouter(prefix="/legajos", tags=["Legajos"])

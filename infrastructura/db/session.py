@@ -5,7 +5,6 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from core.config import settings
 
 # 🔹 URL de conexión
-# ejemplo: mysql+mysqlconnector://root:root123@localhost:3306/liquidaciones
 DATABASE_URL = settings.DATABASE_URL
 
 # 🔹 Engine

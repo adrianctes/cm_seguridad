@@ -25,3 +25,4 @@ class ConceptoResponse(ConceptoBase):
 
     class Config:
         from_attributes = True
+

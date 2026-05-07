@@ -1,5 +1,5 @@
-from domain.entidades.legajo import Legajo
-from domain.repositorios.legajo_repositorio import LegajoRepository
+from domain.entities.legajo_entity import Legajo
+from domain.repositories.legajo_repositorio_interface import LegajoRepository
 
 
 class LegajoService:

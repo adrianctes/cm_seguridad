@@ -7,3 +7,6 @@ class ModalidadLiquidacionResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class LiquidacionUpdateValor(BaseModel):
+    valor: float 

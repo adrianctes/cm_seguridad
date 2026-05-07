@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from domain.entidades.legajo import Legajo
+from domain.entities.legajo_entity import Legajo
 
 
 class LegajoRepository(ABC):

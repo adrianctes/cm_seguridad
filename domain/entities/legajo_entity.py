@@ -1,7 +1,7 @@
 from datetime import date
 
-from domain.entidades.categoria import Categoria
-from domain.entidades.modalidad_liquidacion import ModalidadLiquidacion
+from domain.entities.categoria_entity import Categoria
+from domain.entities.modalidad_liquidacion_entity import ModalidadLiquidacion
 
 
 class Legajo:

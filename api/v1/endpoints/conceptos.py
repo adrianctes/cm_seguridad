@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from aplicacion.dtos.dto_concepto import ConceptoCreate, ConceptoResponse, ConceptoUpdate
-from aplicacion.servicios.concepto_servicio import ConceptoService
+from application.dtos.dto_concepto import ConceptoCreate, ConceptoResponse, ConceptoUpdate
+from application.services.concepto_service import ConceptoService
 from core.dependencias import get_concepto_repository
 
 router = APIRouter(prefix="/conceptos", tags=["Conceptos"])
