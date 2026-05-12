@@ -55,6 +55,7 @@ class MySQLLegajoRepository(LegajoRepository):
         model.cuil = legajo.cuil
         model.activo = legajo.activo
         model.sac =legajo.sac
+        model.telefono = legajo.telefono
         model.categoria_id = legajo.categoria_id
         model.modalidad_liquidacion_id = legajo.modalidad_liquidacion_id
        # model.categoria =legajo.categoria
@@ -102,6 +103,7 @@ class MySQLLegajoRepository(LegajoRepository):
                 categoria=categoria,
                 modalidad_liquidacion=modalidad_liquidacion,
                 activo=m.activo,
-                sac = m.sac
+                sac = m.sac,
+                telefono =  m.telefono
             )
     

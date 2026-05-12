@@ -9,15 +9,14 @@ class LegajoModel(Base):
     # 🔹 PK
     id = Column(Integer, primary_key=True, index=True)
     # 🔹 Datos personales
+    cuil =  Column(String(13), nullable=True)
     apellido = Column(String(100), nullable=False)
     nombre = Column(String(100), nullable=False)
     sexo = Column(String(1), nullable=False)
-    cuil = Column(String(20), unique=True, nullable=False)
-   
-    # 🔹 Laborales
-
     activo = Column(Boolean, default=True)
     sac =Column(Boolean, default=False)
+    telefono = Column(String(15), nullable=False)
+
 
     # 🔹 FK
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)

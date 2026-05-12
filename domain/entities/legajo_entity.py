@@ -18,7 +18,8 @@ class Legajo:
         categoria : Categoria  | None = None,
         modalidad_liquidacion : ModalidadLiquidacion | None = None,
         activo: bool = True,
-        sac: bool =True
+        sac: bool =True,
+        telefono: str = None
     ):
         self.id = id
         self.apellido = apellido
@@ -31,6 +32,7 @@ class Legajo:
         self.modalidad_liquidacion = modalidad_liquidacion
         self.activo = activo
         self.sac = sac
+        self.telefono = telefono
 
     # 🔹 Regla de negocio
     def esta_activo(self) -> bool:

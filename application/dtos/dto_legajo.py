@@ -16,6 +16,7 @@ class LegajoBase(BaseModel):
     modalidad_liquidacion_id: int
     activo: bool = True
     sac: Optional[bool] = None
+    telefono: Optional[str] = None
 
 
 # 🔹 DTO de creación (request)
@@ -25,14 +26,8 @@ class LegajoCreate(LegajoBase):
 
 
 # 🔹 DTO de actualización (parcial)
-class LegajoUpdate(BaseModel):
-    apellido: Optional[str] = None
-    nombre: Optional[str] = None
-    sexo: Optional[str] = None
-    categoria_id: Optional[int] = None
-    modalidad_liquidacion_id: Optional[int] = None
-    activo: Optional[bool] = None
-    sac: Optional[bool] = None
+class LegajoUpdate(LegajoBase):
+      pass
 
 
 # 🔹 DTO de respuesta (response)

@@ -13,7 +13,7 @@ from fastapi.security import OAuth2PasswordBearer
 from core.config import settings
 from jose import JWTError, jwt
 from fastapi import Depends
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 
 
 
@@ -41,10 +41,10 @@ def get_current_user(
     token: str = Depends(oauth2_scheme)
 ):
 
-    # 🔴 OAuth2 ya valida esto, pero mejor mensaje
+
     if not token:
         raise HTTPException(
-            status_code=400,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Falta token de autenticación",
             headers={"WWW-Authenticate": "Bearer"},
         )
