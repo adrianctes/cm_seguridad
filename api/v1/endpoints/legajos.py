@@ -54,7 +54,6 @@ async def listar_legajos(repo = Depends(get_legajo_repository)):
         )
 
 
-
 # 🔹 ACTUALIZAR
 @router.put("/{legajo_id}", response_model=LegajoResponse)
 def actualizar_legajo(

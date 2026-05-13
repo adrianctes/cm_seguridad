@@ -9,6 +9,8 @@ from infrastructura.repositories.mysql_concepto_repository import MySQLConceptoR
 from infrastructura.repositories.mysql_legajo_repository import MySQLLegajoRepository
 from infrastructura.repositories.mysql_liquidacion_repository import MySQLLiquidacionRepository
 from infrastructura.repositories.mysql_usuario_repository import MySQLUsuarioRepository
+from infrastructura.repositories.mysql_categoria_repository import MySQLCategoriaRepository
+from infrastructura.repositories.mysql_modalidad_repository import MySQLModalidadLiquidacionRepository
 from fastapi.security import OAuth2PasswordBearer
 from core.config import settings
 from jose import JWTError, jwt
@@ -16,6 +18,11 @@ from fastapi import Depends
 from fastapi import HTTPException, status
 
 
+def get_categoria_repository(db = Depends(get_db)):
+    return MySQLCategoriaRepository(db)
+
+def get_modalidad_liquidacion_repository(db = Depends(get_db)):
+    return MySQLModalidadLiquidacionRepository(db)
 
 def get_legajo_repository(db = Depends(get_db)):
     return MySQLLegajoRepository(db)
