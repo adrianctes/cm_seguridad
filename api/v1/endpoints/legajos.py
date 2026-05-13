@@ -15,7 +15,7 @@ router = APIRouter(
 
 
 # 🔹 CREAR
-@router.post("/", response_model=LegajoResponse)
+@router.post("", response_model=LegajoResponse)
 def crear_legajo(
     data: LegajoCreate,
     repo = Depends(get_legajo_repository)
@@ -40,7 +40,7 @@ def obtener_legajo(
 
 
 # 🔹 LISTAR
-@router.get("/", response_model=List[LegajoResponse])
+@router.get("", response_model=List[LegajoResponse])
 async def listar_legajos(repo = Depends(get_legajo_repository)):
     try:
         service = LegajoService(repo)
