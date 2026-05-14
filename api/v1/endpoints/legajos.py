@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import List
+from typing import Any, List
 
 from application.dtos.dto_legajo import (
     LegajoCreate,
@@ -20,6 +20,7 @@ def crear_legajo(
     data: LegajoCreate,
     repo = Depends(get_legajo_repository)
 ):
+    print(data)
     service = LegajoService(repo)
     try:
       return service.crear(data)
