@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
-from api.v1.endpoints import (categorias,
+from api.v1.endpoints import (bancos,
+                              categorias,
                               modalidad,
                               legajos,
                               conceptos,
@@ -22,5 +23,6 @@ api_router.include_router(liquidacion.router,
 api_router.include_router(concepto_novedad.router,
                            dependencies=[Depends(get_current_user)])
 
+api_router.include_router(bancos.router)
 api_router.include_router(categorias.router)
 api_router.include_router(modalidad.router)

@@ -1,4 +1,3 @@
-from domain.entities.concepto_entity import Concepto
 from domain.repositories.categoria_repositorio_interface import ICategoriaRepository
 
 class CategoriaService:

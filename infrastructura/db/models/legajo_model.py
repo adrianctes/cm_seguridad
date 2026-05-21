@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String,  Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from infrastructura.db.session import Base
 
@@ -19,12 +19,14 @@ class LegajoModel(Base):
 
 
     # 🔹 FK
+    banco_id =  Column(Integer, ForeignKey("banco.id"), nullable=False)
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
     modalidad_liquidacion_id = Column(Integer, ForeignKey("modalidad_liquidacion.id"), nullable=False)
 
     # 🔹 Relaciones (opcional pero recomendado)
     categoria = relationship("CategoriaModel", back_populates="legajos")
     modalidad_liquidacion = relationship("ModalidadLiquidacionModel", back_populates="legajos")
+    banco = relationship("BancoModel", back_populates="legajos")
 
     # 🔹 Relación con conceptos del empleado (preliquidación)
     #conceptos = relationship("LegajoConceptoModel", back_populates="legajo")

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-class ICategoriaRepository(ABC):
+
+class IBancoRepository(ABC):
 
     @abstractmethod
     def listar(self):

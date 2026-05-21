@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
 from application.dtos.dto_categoria import CategoriaResponse
 from application.services.categoria_service import CategoriaService
 from core.dependencias import get_categoria_repository
