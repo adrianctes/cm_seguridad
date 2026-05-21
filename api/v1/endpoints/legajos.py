@@ -20,7 +20,7 @@ def crear_legajo(
     data: LegajoCreate,
     repo = Depends(get_legajo_repository)
 ):
-    print(data)
+
     service = LegajoService(repo)
     try:
       return service.crear(data)
@@ -37,7 +37,14 @@ def obtener_legajo(
     repo = Depends(get_legajo_repository)
 ):
     service = LegajoService(repo)
-    return service.obtener(legajo_id)
+    try :
+         return service.obtener(legajo_id)
+    except Exception as ex:
+        raise HTTPException(
+            status_code=404,
+            detail=str(ex)
+        )
+ 
 
 
 # 🔹 LISTAR

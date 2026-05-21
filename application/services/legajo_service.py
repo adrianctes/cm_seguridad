@@ -29,12 +29,11 @@ class LegajoService:
         )
       
         return  self.legajo_repo.guardar(legajo)
-      
-
     # =========================
     # 🔹 OBTENER
     # =========================
     def obtener(self, legajo_id: int):
+        
             legajo = self.legajo_repo.obtener_por_id(legajo_id)
             
             if not legajo:
