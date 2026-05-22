@@ -6,6 +6,7 @@ from fastapi import Depends
 from infrastructura.db.session import get_db
 from infrastructura.repositories.mysql_concepto_novedad_repository import MySQLConceptoNovedadRepository
 from infrastructura.repositories.mysql_concepto_repository import MySQLConceptoRepository
+from infrastructura.repositories.mysql_historia_laboral_repository import MySQLHistoriaLaboralRepository
 from infrastructura.repositories.mysql_legajo_repository import MySQLLegajoRepository
 from infrastructura.repositories.mysql_liquidacion_repository import MySQLLiquidacionRepository
 from infrastructura.repositories.mysql_usuario_repository import MySQLUsuarioRepository
@@ -17,6 +18,10 @@ from core.config import settings
 from jose import JWTError, jwt
 from fastapi import Depends
 from fastapi import HTTPException, status
+
+
+def get_historia_laboral_repository(db = Depends(get_db)):
+    return MySQLHistoriaLaboralRepository(db)
 
 def get_banco_repository(db = Depends(get_db)):
     return MySQLBancoRepository(db)

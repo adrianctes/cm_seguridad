@@ -22,6 +22,8 @@ class LegajoBase(BaseModel):
     activo: bool = True
     sac: Optional[bool] = None
     telefono: Optional[str] = None
+    banco_id: Optional[str] = None
+    cbu: Optional[str] = None
 
     # =========================
     # VALIDACIONES PERSONALIZADAS
@@ -48,7 +50,6 @@ class LegajoBase(BaseModel):
             raise ValueError("El nombre es obligatorio")
         return v
 
-    
 
     @field_validator("sexo")
     @classmethod
@@ -62,6 +63,13 @@ class LegajoBase(BaseModel):
     def validar_telefono(cls, v):
         if v and len(v) < 6:
             raise ValueError("Teléfono inválido")
+        return v
+    
+    @field_validator("cbu")
+    @classmethod
+    def validar_cbu(cls, v):
+        if v and len(v) < 22:
+            raise ValueError("Cbu inválido")
         return v
 
 

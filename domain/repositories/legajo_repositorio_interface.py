@@ -4,7 +4,7 @@ from typing import List, Optional
 from domain.entities.legajo_entity import Legajo
 
 
-class LegajoRepository(ABC):
+class ILegajoRepository(ABC):
 
     @abstractmethod
     def obtener_por_id(self, legajo_id: int) -> Optional[Legajo]:

@@ -1,5 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError
-from domain.repositories.legajo_repositorio_interface import LegajoRepository
+from domain.repositories.legajo_repositorio_interface import ILegajoRepository
 from domain.entities.legajo_entity import Legajo
 from infrastructura.db.models.legajo_model import LegajoModel
 from infrastructura.db.models.categoria_model import CategoriaModel
@@ -8,7 +8,7 @@ from sqlalchemy.orm import joinedload
 from infrastructura.db.models.modalidad_liquidacion import ModalidadLiquidacionModel
 
 
-class MySQLLegajoRepository(LegajoRepository):
+class MySQLLegajoRepository(ILegajoRepository):
 
     def __init__(self, db):
         self.db = db
@@ -58,6 +58,8 @@ class MySQLLegajoRepository(LegajoRepository):
         model.telefono = legajo.telefono
         model.categoria_id = legajo.categoria_id
         model.modalidad_liquidacion_id = legajo.modalidad_liquidacion_id
+        model.banco_id = legajo.banco_id
+        model.cbu = legajo.cbu
        # model.categoria =legajo.categoria
         #model.modalidad_liquidacion =legajo.modalidad_liquidacion
        

@@ -16,7 +16,7 @@ class LegajoModel(Base):
     activo = Column(Boolean, default=True)
     sac =Column(Boolean, default=False)
     telefono = Column(String(15), nullable=False)
-
+    cbu  = Column(String(22), nullable=False)
 
     # 🔹 FK
     banco_id =  Column(Integer, ForeignKey("banco.id"), nullable=False)
@@ -27,6 +27,12 @@ class LegajoModel(Base):
     categoria = relationship("CategoriaModel", back_populates="legajos")
     modalidad_liquidacion = relationship("ModalidadLiquidacionModel", back_populates="legajos")
     banco = relationship("BancoModel", back_populates="legajos")
+
+    historia_laboral = relationship(
+        "HistoriaLaboralModel",
+        back_populates="legajo",
+        cascade="all, delete-orphan"
+    )
 
     # 🔹 Relación con conceptos del empleado (preliquidación)
     #conceptos = relationship("LegajoConceptoModel", back_populates="legajo")

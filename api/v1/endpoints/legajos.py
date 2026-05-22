@@ -7,7 +7,7 @@ from application.dtos.dto_legajo import (
     LegajoResponse
 )
 from application.services.legajo_service import LegajoService
-from core.dependencias import get_current_user, get_legajo_repository
+from core.dependencias import get_legajo_repository
 
 router = APIRouter(
     prefix="/legajos",
@@ -45,8 +45,6 @@ def obtener_legajo(
             detail=str(ex)
         )
  
-
-
 # 🔹 LISTAR
 @router.get("", response_model=List[LegajoResponse])
 async def listar_legajos(repo = Depends(get_legajo_repository)):

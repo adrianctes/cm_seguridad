@@ -1,5 +1,6 @@
 from datetime import date
 
+from domain.entities.banco_entity import Banco
 from domain.entities.categoria_entity import Categoria
 from domain.entities.modalidad_liquidacion_entity import ModalidadLiquidacion
 
@@ -19,7 +20,10 @@ class Legajo:
         modalidad_liquidacion : ModalidadLiquidacion | None = None,
         activo: bool = True,
         sac: bool =True,
-        telefono: str = None
+        telefono: str = None,
+        banco_id: int  | None = None,
+        banco: Banco  | None = None,
+        cbu : str  | None = None
     ):
         self.id = id
         self.apellido = apellido
@@ -33,6 +37,9 @@ class Legajo:
         self.activo = activo
         self.sac = sac
         self.telefono = telefono
+        self.banco_id = banco_id
+        self.banco = banco
+        self.cbu = cbu
 
     # 🔹 Regla de negocio
     def esta_activo(self) -> bool:

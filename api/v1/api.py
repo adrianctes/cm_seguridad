@@ -7,6 +7,7 @@ from api.v1.endpoints import (bancos,
                               liquidacion,
                               concepto_novedad,
                               usuario,
+                              historia_laboral,
                               auth)
 from core.dependencias import get_current_user
 api_router = APIRouter()
@@ -26,3 +27,4 @@ api_router.include_router(concepto_novedad.router,
 api_router.include_router(bancos.router)
 api_router.include_router(categorias.router)
 api_router.include_router(modalidad.router)
+api_router.include_router(historia_laboral.router)

@@ -1,10 +1,10 @@
 from domain.entities.legajo_entity import Legajo
-from domain.repositories.legajo_repositorio_interface import LegajoRepository
+from domain.repositories.legajo_repositorio_interface import ILegajoRepository
 
 
 class LegajoService:
 
-    def __init__(self, legajo_repo: LegajoRepository):
+    def __init__(self, legajo_repo: ILegajoRepository):
         self.legajo_repo = legajo_repo
 
     # =========================
