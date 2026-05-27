@@ -13,9 +13,7 @@ class HistoriaLaboral:
 
         self.legajo_id = legajo_id
 
-        self.tipo_id = (
-            tipo_id
-        )
+        self.tipo_id = tipo_id
 
         self.fecha = fecha
 

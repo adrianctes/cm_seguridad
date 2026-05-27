@@ -1,16 +1,12 @@
 from datetime import datetime
+from pydantic import BaseModel, Field
 
-from pydantic import BaseModel
-from pydantic import Field
-
-
-# =========================================
-# CREATE / UPDATE
-# =========================================
 
 class HistoriaLaboral(BaseModel):
 
-    tipo_movimiento_id: int = Field(
+    legajo_id: int
+
+    tipo_id: int = Field(
         ...,
         gt=0
     )
@@ -22,10 +18,6 @@ class HistoriaLaboral(BaseModel):
         max_length=1000
     )
 
-
-# =========================================
-# RESPONSE
-# =========================================
 
 class HistoriaLaboralResponse(BaseModel):
 
@@ -40,5 +32,4 @@ class HistoriaLaboralResponse(BaseModel):
     observacion: str | None
 
     class Config:
-
         from_attributes = True

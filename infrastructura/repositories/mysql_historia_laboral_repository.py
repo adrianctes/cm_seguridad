@@ -1,3 +1,4 @@
+from domain.entities.historia_laboral_entity import HistoriaLaboral
 from infrastructura.db.models.historia_laboral_model import HistoriaLaboralModel
 
 
@@ -11,15 +12,33 @@ class MySQLHistoriaLaboralRepository:
     # CREATE
     # =========================================
 
-    def crear(self, historia):
+    def crear(self, historia:HistoriaLaboral ):
 
-        self.db.add(historia)
+        try:
 
-        self.db.commit()
+            model = HistoriaLaboralModel(
 
-        self.db.refresh(historia)
+                legajo_id=historia.legajo_id,
 
-        return historia
+                tipo_id=historia.tipo_id,
+
+                fecha=historia.fecha,
+
+                observacion=historia.observacion            
+            )
+
+            self.db.add(model)
+            self.db.flush()
+
+            return model
+
+        except Exception as ex:
+
+            self.db.rollback()
+
+            print("ERROR SQL:", repr(ex))
+
+            raise ex
 
     # =========================================
     # READ
@@ -33,7 +52,7 @@ class MySQLHistoriaLaboralRepository:
                 HistoriaLaboralModel.legajo_id == legajo_id
             )
             .order_by(
-                HistoriaLaboralModel.fecha.desc()
+                HistoriaLaboralModel.id.desc()
             )
             .all()
         )
@@ -59,7 +78,7 @@ class MySQLHistoriaLaboralRepository:
                 HistoriaLaboralModel.legajo_id == legajo_id
             )
             .order_by(
-                HistoriaLaboralModel.fecha.desc()
+                HistoriaLaboralModel.id.desc()
             )
             .first()
         )

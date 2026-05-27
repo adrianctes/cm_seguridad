@@ -109,3 +109,27 @@ class MySQLLegajoRepository(ILegajoRepository):
                 telefono =  m.telefono
             )
     
+    def actualizar_fecha_ingreso_actual(
+        self,
+        legajo_id,
+        fecha
+    ):
+        
+        try: 
+            model = (
+                self.db.query(LegajoModel)
+                .filter_by(id=legajo_id)
+                .first()
+            )
+
+            if not model:
+                raise Exception(
+                    "Legajo no encontrado"
+                )
+
+            model.fecha_ingreso_actual = fecha
+            self.db.flush()
+            return model
+        except SQLAlchemyError as e:
+            error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]
+            raise Exception(error_msg)    

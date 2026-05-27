@@ -2,8 +2,10 @@
 
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
+from application.dtos.dto_historia_laboral import HistoriaLaboral, HistoriaLaboralResponse
 from application.services.historia_laboral_service import HistoriaLaboralService
 from core.dependencias import  get_historia_laboral_repository
+from core.dependencias import  get_legajo_repository
 
 
 router = APIRouter(
@@ -15,13 +17,31 @@ router = APIRouter(
     "/legajos/{legajo_id}/historia-laboral"
 )
 def listar_historial_legajo(
+
     legajo_id: int,
-    repo = Depends(get_historia_laboral_repository)
+
+    repo=Depends(
+        get_historia_laboral_repository
+    ),
+
+    repo_legajo=Depends(
+        get_legajo_repository
+    )
 ):
-    service = HistoriaLaboralService(repo)
-    try :
-         return service.listar_por_legajo(legajo_id)
+
+    service = HistoriaLaboralService(
+        repo,
+        repo_legajo
+    )
+
+    try:
+
+        return service.listar_por_legajo(
+            legajo_id
+        )
+
     except Exception as ex:
+
         raise HTTPException(
             status_code=404,
             detail=str(ex)
@@ -53,19 +73,29 @@ def obtener_movimiento(
 # =====================================================
 
 @router.post(
-    "/legajos/{legajo_id}/historia-laboral"
+    "/historia-laboral", response_model=HistoriaLaboralResponse
 )
 def crear_movimiento(
-    legajo_id: int,
-    data,
-    repo = Depends(get_historia_laboral_repository)
-):
+    data: HistoriaLaboral,
+    repo=Depends(
+        get_historia_laboral_repository
+    ),
 
-    """
-    Crea un movimiento para el legajo
-    """
+    repo_legajo=Depends(
+        get_legajo_repository
+    )
+): 
 
-    pass
+    service = HistoriaLaboralService(repo, repo_legajo)
+    try :
+        return service.crear_movimiento(data)
+    except Exception as ex:
+        print(ex)
+        raise HTTPException(
+            status_code=400,
+            detail=str(ex)
+        )
+   
 
 
 # =====================================================

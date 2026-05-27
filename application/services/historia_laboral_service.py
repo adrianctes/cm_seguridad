@@ -1,30 +1,102 @@
 from domain.entities.historia_laboral_entity import HistoriaLaboral
 from domain.repositories.historia_laboral_interface import IHistoriaLaboral
-
+from domain.repositories.legajo_repositorio_interface import ILegajoRepository
 
 class HistoriaLaboralService:
 
-    def __init__(self, repo: IHistoriaLaboral):
+    def __init__(self, repo: IHistoriaLaboral, repo_legajo:ILegajoRepository):
         self.repo = repo
+        self.repo_legajo = repo_legajo
 
     # =========================================
     # CREATE
     # =========================================
-
     def crear_movimiento(
         self,
-        legajo_id: int,
         data
-    ):
+        ):
 
-        historia = HistoriaLaboral(
-            legajo_id=legajo_id,
-            tipo_movimiento_id=data.tipo_movimiento_id,
-            fecha=data.fecha,
-            observacion=data.observacion
-        )
+        try:
+            historia = HistoriaLaboral(
+                legajo_id=data.legajo_id,
+                tipo_id=data.tipo_id,
+                fecha=data.fecha,
+                observacion=data.observacion
+            )
 
-        return self.repo.crear(historia)
+            movimientos = self.repo.obtener_ultimo_movimiento(data.legajo_id)
+
+            ultimo = None
+
+            if movimientos:
+                ultimo = movimientos
+
+            # ==========================
+            # ALTA
+            # ==========================
+           
+            if data.tipo_id == 1:
+                    if ultimo:
+                        raise Exception(
+                            "Movimiento de ALTA ya existe."
+                        )
+
+                # ==========================
+                # BAJA
+                # ==========================
+
+            elif data.tipo_id == 2:
+                if not ultimo:
+                    raise Exception(
+                        "El legajo no posee movimientos para dar de BAJA."
+                    )
+                if ultimo.tipo_id == 2:
+                    raise Exception(
+                        "El legajo ya está de baja"
+                    )
+                if data.fecha < ultimo.fecha:
+                          raise Exception("La fecha no puede ser menor al último movimiento")
+
+            # ==========================
+            # REINGRESO
+            # ==========================
+
+            elif data.tipo_id == 3:
+                if not ultimo:
+                    raise Exception(
+                        "El legajo no posee historial"
+                    )
+
+                if ultimo.tipo_id != 2:
+                    raise Exception(
+                        "Debe existir una baja previa"
+                    )
+                if data.fecha < ultimo.fecha:
+                          raise Exception("La fecha no puede ser menor al último movimiento")
+
+
+                        
+             
+            resultado = self.repo.crear(historia)
+
+
+
+            self.repo_legajo.actualizar_fecha_ingreso_actual(
+                legajo_id=data.legajo_id,
+                fecha=data.fecha
+            )
+
+            self.repo.db.commit()
+
+            return resultado
+
+        except Exception as ex:
+
+            self.repo.db.rollback()
+
+            raise ex    
+
+       
 
     # =========================================
     # READ

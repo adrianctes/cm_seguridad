@@ -9,9 +9,8 @@ class IHistoriaLaboral(ABC):
     # =========================================
 
     @abstractmethod
-    def crear_movimiento(
+    def crear(
         self,
-        legajo_id: int,
         data
     ):
         pass
@@ -61,7 +60,7 @@ class IHistoriaLaboral(ABC):
     # =========================================
 
     @abstractmethod
-    def editar_movimiento(
+    def editar(
         self,
         movimiento_id: int,
         data
@@ -73,7 +72,7 @@ class IHistoriaLaboral(ABC):
     # =========================================
 
     @abstractmethod
-    def eliminar_movimiento(
+    def eliminar(
         self,
         movimiento_id: int
     ):

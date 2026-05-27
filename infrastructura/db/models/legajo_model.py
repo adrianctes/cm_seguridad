@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String,  Boolean, ForeignKey
+from sqlalchemy import Column, DateTime, Integer, String,  Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from infrastructura.db.session import Base
 
@@ -17,6 +17,8 @@ class LegajoModel(Base):
     sac =Column(Boolean, default=False)
     telefono = Column(String(15), nullable=False)
     cbu  = Column(String(22), nullable=False)
+    fecha_ingreso_actual = Column( DateTime,   nullable=True)
+
 
     # 🔹 FK
     banco_id =  Column(Integer, ForeignKey("banco.id"), nullable=False)
