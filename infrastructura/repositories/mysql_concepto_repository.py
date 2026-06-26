@@ -11,10 +11,13 @@ class MySQLConceptoRepository:
             model = ConceptoModel(
                 codigo=data.codigo,
                 nombre=data.nombre,
-                tipo=data.tipo,
-                es_remunerativo=data.es_remunerativo,
+                orden = data.orden,
+                clasificacion_concepto_id = data.clasificacion_concepto_id,
+                modalidad_pago_id = data.modalidad_pago_id,
+                tipo_calculo=data.tipo_calculo,
+                formula = data.formula,
                 activo=data.activo,
-                requiere_novedad=data.requiere_novedad
+                es_novedad=data.es_novedad
             )
 
             self.db.add(model)
@@ -29,8 +32,8 @@ class MySQLConceptoRepository:
     def listar(self):
         return self.db.query(ConceptoModel).all()
 
-    def obtener(self, concepto_id: int):
-        return self.db.query(ConceptoModel).filter_by(id=concepto_id).first()
+    def obtener(self, id: int):
+        return self.db.query(ConceptoModel).filter_by(id=id).first()
 
     def actualizar(self, concepto_id: int, data):
         model = self.obtener(concepto_id)

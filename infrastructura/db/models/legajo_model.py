@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Integer, String,  Boolean, ForeignKey
+from sqlalchemy import Column, DateTime, Float, Integer, String,  Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from infrastructura.db.session import Base
 
@@ -18,12 +18,13 @@ class LegajoModel(Base):
     telefono = Column(String(15), nullable=False)
     cbu  = Column(String(22), nullable=False)
     fecha_ingreso_actual = Column( DateTime,   nullable=True)
-
-
+   
     # 🔹 FK
     banco_id =  Column(Integer, ForeignKey("banco.id"), nullable=False)
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
     modalidad_liquidacion_id = Column(Integer, ForeignKey("modalidad_liquidacion.id"), nullable=False)
+    modalidad_pago_id = Column(Integer,  nullable=False)
+    valor_modalidad_pago =  Column(Float, nullable=False)
 
     # 🔹 Relaciones (opcional pero recomendado)
     categoria = relationship("CategoriaModel", back_populates="legajos")

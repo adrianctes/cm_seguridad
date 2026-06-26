@@ -23,12 +23,14 @@ class ILegajoRepository(ABC):
     def guardar(self, legajo: Legajo) -> Legajo:
         pass
 
-   # @abstractmethod
-   # def eliminar(self, legajo_id: int) -> None:
-   #     pass
+    @abstractmethod
+    def eliminar(self, legajo_id: int) -> None:
+        pass
+   
     @abstractmethod
     def actualizar_fecha_ingreso_actual(
         self,
         legajo_id: int,
-        fecha: datetime
+        fecha: datetime,
+        valor: bool
         ):pass

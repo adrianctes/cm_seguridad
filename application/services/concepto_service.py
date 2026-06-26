@@ -9,15 +9,17 @@ class ConceptoService:
     # 🔹 Crear
     def crear(self, data):
         concepto = Concepto(
-            id = None,
             codigo=data.codigo,
             nombre=data.nombre,
-            tipo=data.tipo,
-            es_remunerativo=data.es_remunerativo,
+            clasificacion_concepto_id = data.clasificacion_concepto_id,
+            tipo_calculo=data.tipo_calculo,
+            formula= data.formula,
             activo=data.activo,
-            requiere_novedad=data.requiere_novedad
+            es_novedad=data.es_novedad,
+            modalidad_pago_id = data.modalidad_pago_id,
+            orden = data.orden
         )
-
+     
         return self.repo.crear(concepto)
 
     # 🔹 Listar
@@ -25,13 +27,14 @@ class ConceptoService:
         return self.repo.listar()
 
     # 🔹 Obtener por ID
-    def obtener(self, concepto_id: int):
-        concepto = self.repo.obtener(concepto_id)
+    def obtener(self, id: int):
+        concepto = self.repo.obtener(id)
+        print(concepto.__dict__)
         if not concepto:
             raise ValueError("Concepto no encontrado")
         return concepto
 
-    # 🔹 Actualizar (PATCH)
+    # 🔹 Actualizar (PUT)
     def actualizar(self, concepto_id: int, data):
         concepto = self.repo.actualizar(concepto_id, data)
         if not concepto:

@@ -47,8 +47,6 @@ def listar_historial_legajo(
             detail=str(ex)
         )
    
-
-
 # =====================================================
 # OBTENER MOVIMIENTO POR ID
 # =====================================================
@@ -67,11 +65,9 @@ def obtener_movimiento(
 
     pass
 
-
 # =====================================================
 # CREAR MOVIMIENTO
 # =====================================================
-
 @router.post(
     "/historia-laboral", response_model=HistoriaLaboralResponse
 )
@@ -95,13 +91,9 @@ def crear_movimiento(
             status_code=400,
             detail=str(ex)
         )
-   
-
-
 # =====================================================
 # EDITAR MOVIMIENTO
 # =====================================================
-
 @router.put(
     "/historia-laboral/{id}"
 )
@@ -116,12 +108,9 @@ def editar_movimiento(
     """
 
     pass
-
-
 # =====================================================
 # ELIMINAR MOVIMIENTO
 # =====================================================
-
 @router.delete(
     "/historia-laboral/{id}"
 )
@@ -135,12 +124,9 @@ def eliminar_movimiento(
     """
 
     pass
-
-
 # =====================================================
 # ULTIMO MOVIMIENTO DEL LEGAJO
 # =====================================================
-
 @router.get(
     "/legajos/{legajo_id}/historia-laboral/ultimo"
 )
@@ -155,12 +141,9 @@ def obtener_ultimo_movimiento(
     """
 
     pass
-
-
 # =====================================================
 # MOVIMIENTOS POR TIPO
 # =====================================================
-
 @router.get(
     "/historia-laboral/tipo/{tipo_id}"
 )
@@ -174,12 +157,9 @@ def listar_por_tipo(
     """
 
     pass
-
-
 # =====================================================
 # MOVIMIENTOS ENTRE FECHAS
 # =====================================================
-
 @router.get(
     "/historia-laboral"
 )
@@ -194,12 +174,9 @@ def listar_por_fecha(
     """
 
     pass
-
-
 # =====================================================
 # HISTORIAL ACTIVO DEL LEGAJO
 # =====================================================
-
 @router.get(
     "/legajos/{legajo_id}/historia-laboral/activo"
 )

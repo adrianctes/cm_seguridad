@@ -2,23 +2,23 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class ConceptoBase(BaseModel):
-    codigo: str = Field(..., max_length=2)
+    codigo: str = Field(..., max_length=6)
     nombre: str = Field(..., max_length=100)
-    tipo: str = Field(..., max_length=1)
-    es_remunerativo: Optional[bool] = True
-    activo: Optional[bool] = True
-    requiere_novedad: Optional[bool] = None
+    clasificacion_concepto_id : int
+    tipo_calculo: str
+    formula: Optional[str] = None
+    activo: Optional[bool] = None
+    es_novedad: Optional[bool] = None
+    modalidad_pago_id :Optional[int] = None
+    orden : Optional[int] = None
+
+  
 
 class ConceptoCreate(ConceptoBase):
     pass
 
-class ConceptoUpdate(BaseModel):
-    codigo: Optional[str] = None
-    nombre: Optional[str] = None
-    tipo: Optional[str] = None
-    es_remunerativo: Optional[bool] = None
-    activo: Optional[bool] = None
-    requiere_novedad: Optional[bool] = None
+class ConceptoUpdate(ConceptoBase):
+      pass
 
 class ConceptoResponse(ConceptoBase):
     id: int

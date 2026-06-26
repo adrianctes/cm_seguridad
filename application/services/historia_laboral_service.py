@@ -15,36 +15,23 @@ class HistoriaLaboralService:
         self,
         data
         ):
-
+        valor=True
         try:
-            historia = HistoriaLaboral(
-                legajo_id=data.legajo_id,
-                tipo_id=data.tipo_id,
-                fecha=data.fecha,
-                observacion=data.observacion
-            )
-
             movimientos = self.repo.obtener_ultimo_movimiento(data.legajo_id)
-
             ultimo = None
-
             if movimientos:
                 ultimo = movimientos
-
             # ==========================
             # ALTA
             # ==========================
-           
             if data.tipo_id == 1:
                     if ultimo:
                         raise Exception(
                             "Movimiento de ALTA ya existe."
                         )
-
-                # ==========================
-                # BAJA
-                # ==========================
-
+            # ==========================
+            # BAJA
+            # ==========================
             elif data.tipo_id == 2:
                 if not ultimo:
                     raise Exception(
@@ -56,11 +43,10 @@ class HistoriaLaboralService:
                     )
                 if data.fecha < ultimo.fecha:
                           raise Exception("La fecha no puede ser menor al último movimiento")
-
+                valor=False
             # ==========================
             # REINGRESO
             # ==========================
-
             elif data.tipo_id == 3:
                 if not ultimo:
                     raise Exception(
@@ -73,17 +59,19 @@ class HistoriaLaboralService:
                     )
                 if data.fecha < ultimo.fecha:
                           raise Exception("La fecha no puede ser menor al último movimiento")
-
-
                         
-             
+            historia = HistoriaLaboral(
+                legajo_id=data.legajo_id,
+                tipo_id=data.tipo_id,
+                fecha=data.fecha,
+                observacion=data.observacion
+            )
             resultado = self.repo.crear(historia)
-
-
 
             self.repo_legajo.actualizar_fecha_ingreso_actual(
                 legajo_id=data.legajo_id,
-                fecha=data.fecha
+                fecha=data.fecha,
+                activo=valor
             )
 
             self.repo.db.commit()

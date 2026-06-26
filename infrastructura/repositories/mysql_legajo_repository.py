@@ -29,7 +29,7 @@ class MySQLLegajoRepository(ILegajoRepository):
         return self._to_entity(model)
 
     def listar(self):
-        #try:
+        try:
             modelos = (
                 self.db.query(LegajoModel)
                 .options(joinedload(LegajoModel.categoria)) 
@@ -39,11 +39,11 @@ class MySQLLegajoRepository(ILegajoRepository):
     
             return [self._to_entity(m) for m in modelos]
 
-        #except SQLAlchemyError as e:
-        #    raise Exception("Error al consultar legajos en base de datos")
+        except SQLAlchemyError as e:
+            raise Exception("Error al consultar legajos en base de datos")
         
     def guardar(self, legajo: Legajo):
-        
+       
         if legajo.id:
           model = self.db.query(LegajoModel).get(legajo.id)
         else:
@@ -60,10 +60,12 @@ class MySQLLegajoRepository(ILegajoRepository):
         model.modalidad_liquidacion_id = legajo.modalidad_liquidacion_id
         model.banco_id = legajo.banco_id
         model.cbu = legajo.cbu
+        model.modalidad_pago_id = legajo.modalidad_pago_id
+        model.valor_modalidad_pago = legajo.valor_modalidad_pago
        # model.categoria =legajo.categoria
         #model.modalidad_liquidacion =legajo.modalidad_liquidacion
        
-      
+    
         try:
             if model.id is None :
               self.db.add(model)
@@ -71,12 +73,28 @@ class MySQLLegajoRepository(ILegajoRepository):
             self.db.refresh(model)
             print(model.__dict__)
         except SQLAlchemyError as e:
+            print(e)
             error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]
             raise Exception(error_msg)    
 
 
         return self._to_entity(model)
 
+    def eliminar(self, legajo_id: int):
+
+        legajo = (
+            self.db.query(LegajoModel)
+            .filter(LegajoModel.id == legajo_id)
+            .first()
+        )
+
+        if not legajo:
+            raise Exception("Legajo no encontrado")
+
+        self.db.delete(legajo)
+
+        self.db.commit()
+    
     # 🔥 mapper interno
     def _to_entity(self, m: LegajoModel):
         categoria = None
@@ -106,13 +124,20 @@ class MySQLLegajoRepository(ILegajoRepository):
                 modalidad_liquidacion=modalidad_liquidacion,
                 activo=m.activo,
                 sac = m.sac,
-                telefono =  m.telefono
+                telefono =  m.telefono,
+                banco = m.banco,
+                banco_id = m.banco_id,
+                cbu = m.cbu,
+                fecha_ingreso_actual = m.fecha_ingreso_actual,
+                modalidad_pago_id = m.modalidad_pago_id,
+                valor_modalidad_pago = m.valor_modalidad_pago
             )
     
     def actualizar_fecha_ingreso_actual(
         self,
         legajo_id,
-        fecha
+        fecha,
+        activo
     ):
         
         try: 
@@ -128,6 +153,7 @@ class MySQLLegajoRepository(ILegajoRepository):
                 )
 
             model.fecha_ingreso_actual = fecha
+            model.activo = activo
             self.db.flush()
             return model
         except SQLAlchemyError as e:

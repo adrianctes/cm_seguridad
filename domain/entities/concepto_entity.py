@@ -4,18 +4,24 @@ class Concepto:
      
     def __init__(
         self,
-        id: Optional[int],
         codigo: str,
         nombre: str,
-        tipo: str,
-        es_remunerativo: bool = True,
+        clasificacion_concepto_id :int,
+        tipo_calculo: str,
+        formula :Optional[str] = None,
         activo: bool = True,
-        requiere_novedad: Optional[bool] = None
+        es_novedad: Optional[bool] = None,
+        orden:  Optional[int]= None,
+        modalidad_pago_id :  Optional[int]= None,
+        id: Optional[int]= None
     ):
         self.id = id
         self.codigo = codigo
         self.nombre = nombre
-        self.tipo = tipo
-        self.es_remunerativo = es_remunerativo
+        self.orden = orden
+        self.clasificacion_concepto_id = clasificacion_concepto_id
+        self.modalidad_pago_id = modalidad_pago_id
+        self.tipo_calculo = tipo_calculo
+        self.formula = formula
         self.activo = activo
-        self.requiere_novedad = requiere_novedad
+        self.es_novedad = es_novedad

@@ -25,7 +25,9 @@ class LegajoService:
             categoria =  None,
             modalidad_liquidacion_id=data.modalidad_liquidacion_id,
             modalidad_liquidacion= None,
-            activo=True
+            banco_id= data.banco_id,
+            modalidad_pago_id = data.modalidad_pago_id,
+            valor_modalidad_pago = data.valor_modalidad_pago
         )
       
         return  self.legajo_repo.guardar(legajo)
@@ -64,10 +66,7 @@ class LegajoService:
     # =========================
     # 🔹 ELIMINAR (soft)
     # =========================
-    def eliminar(self, legajo_id: int):
-        legajo = self.obtener(legajo_id)
+    def eliminar(self, legajo_id: int): 
+        self.legajo_repo.eliminar(legajo_id)
 
-        legajo.activo = False
-
-        return self.legajo_repo.guardar(legajo)
 

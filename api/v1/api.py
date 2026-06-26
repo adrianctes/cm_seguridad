@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends
-from api.v1.endpoints import (bancos,
+from api.v1.endpoints import (auth,
+                              bancos,
                               categorias,
-                              modalidad,
-                              legajos,
+                              clasificacion_concepto,
                               conceptos,
-                              liquidacion,
                               concepto_novedad,
-                              usuario,
                               historia_laboral,
-                              auth)
+                              legajos,
+                              liquidacion,
+                              modalidad,
+                              usuario,
+                             )
 from core.dependencias import get_current_user
 api_router = APIRouter()
 
@@ -28,3 +30,5 @@ api_router.include_router(bancos.router)
 api_router.include_router(categorias.router)
 api_router.include_router(modalidad.router)
 api_router.include_router(historia_laboral.router)
+api_router.include_router(clasificacion_concepto.router)
+

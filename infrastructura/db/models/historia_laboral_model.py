@@ -29,9 +29,12 @@ class HistoriaLaboralModel(Base):
 
     legajo_id = Column(
         Integer,
-        ForeignKey("legajo.id"),
+        ForeignKey(
+            "legajo.id",
+            ondelete="RESTRICT"
+        ),
         nullable=False
-    )
+    )    
 
     tipo_id = Column(
         Integer,
