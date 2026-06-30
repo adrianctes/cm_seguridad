@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from application.dtos.dto_concepto import ConceptoCreate, ConceptoResponse, ConceptoUpdate
 from application.services.concepto_service import ConceptoService
@@ -21,7 +21,6 @@ def crear(data: ConceptoCreate,
             detail=str(ex)
         )
    
-
 @router.get("", response_model=list[ConceptoResponse])
 def listar( repo = Depends(get_concepto_repository)):
     service = ConceptoService(repo)
@@ -43,7 +42,36 @@ def obtener(id: int, repo = Depends(get_concepto_repository)):
             status_code=422,
             detail=str(ex)
         )
-   
+  
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+
+router = APIRouter(
+    prefix="/conceptos",
+    tags=["Conceptos"]
+)
+
+
+@router.get("", response_model=list[ConceptoResponse])
+async def obtener_por_modalidad_pago(
+    modalidad_pago_id: int | None = Query(None),
+    repo=Depends(get_concepto_repository)
+):
+
+    service = ConceptoService(repo)
+
+    try:
+
+        return service.obtener_por_modalidad_pago(
+            modalidad_pago_id
+        )
+
+    except Exception as ex:
+
+        raise HTTPException(
+            status_code=422,
+            detail=str(ex)
+        )
 
 @router.put("/{concepto_id}", response_model=ConceptoResponse)
 def actualizar(concepto_id: int, data: ConceptoUpdate, repo = Depends(get_concepto_repository)):

@@ -15,6 +15,9 @@ class IConceptoRepository(ABC):
     def obtener(self, concepto_id: int):
         pass
 
+    def obtener_por_modalidad_pago(self, modalidad_pago_id:int):
+        pass
+
     @abstractmethod
     def actualizar(self, concepto_id: int, data):
         pass

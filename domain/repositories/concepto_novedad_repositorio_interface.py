@@ -12,7 +12,7 @@ class ConceptoNovedadRepository(ABC):
     @abstractmethod
     def obtener_por_id(self, id: int) -> ConceptoNovedad:
         pass
-
+ 
     @abstractmethod
     def listar_por_legajo(self, legajo_id: int) -> List[ConceptoNovedad]:
         pass

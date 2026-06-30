@@ -31,9 +31,24 @@ class MySQLConceptoRepository:
 
     def listar(self):
         return self.db.query(ConceptoModel).all()
-
+    
     def obtener(self, id: int):
         return self.db.query(ConceptoModel).filter_by(id=id).first()
+    
+   
+    def obtener_por_modalidad_pago(self,modalidad_pago_id: int):
+
+        query = self.db.query(ConceptoModel)
+
+        if modalidad_pago_id is not None:
+
+            query = query.filter(
+                ConceptoModel.modalidad_pago_id.in_(
+                    [modalidad_pago_id, 0]
+                )
+            )
+
+        return query.all()
 
     def actualizar(self, concepto_id: int, data):
         model = self.obtener(concepto_id)

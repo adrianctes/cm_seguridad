@@ -33,6 +33,10 @@ class ConceptoService:
         if not concepto:
             raise ValueError("Concepto no encontrado")
         return concepto
+    
+    def obtener_por_modalidad_pago(self,modalidad_pago_id: int ):
+
+        return self.repo.obtener_por_modalidad_pago(modalidad_pago_id)
 
     # 🔹 Actualizar (PUT)
     def actualizar(self, concepto_id: int, data):
