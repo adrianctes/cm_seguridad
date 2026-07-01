@@ -34,3 +34,4 @@ class ILegajoRepository(ABC):
         fecha: datetime,
         valor: bool
         ):pass
+    

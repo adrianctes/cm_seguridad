@@ -43,18 +43,12 @@ def obtener(id: int, repo = Depends(get_concepto_repository)):
             detail=str(ex)
         )
   
-
-from fastapi import APIRouter, Depends, HTTPException, Query
-
-router = APIRouter(
-    prefix="/conceptos",
-    tags=["Conceptos"]
+@router.get(
+    "/modalidad-pago/{id}",
+    response_model=list[ConceptoResponse]
 )
-
-
-@router.get("", response_model=list[ConceptoResponse])
-async def obtener_por_modalidad_pago(
-    modalidad_pago_id: int | None = Query(None),
+def obtener_por_modalidad_pago(
+    id: int,
     repo=Depends(get_concepto_repository)
 ):
 
@@ -63,7 +57,7 @@ async def obtener_por_modalidad_pago(
     try:
 
         return service.obtener_por_modalidad_pago(
-            modalidad_pago_id
+            id
         )
 
     except Exception as ex:
@@ -72,6 +66,7 @@ async def obtener_por_modalidad_pago(
             status_code=422,
             detail=str(ex)
         )
+
 
 @router.put("/{concepto_id}", response_model=ConceptoResponse)
 def actualizar(concepto_id: int, data: ConceptoUpdate, repo = Depends(get_concepto_repository)):

@@ -36,7 +36,11 @@ class LegajoModel(Base):
         back_populates="legajo",
         cascade="all, delete-orphan"
     )
-
+    conceptos = relationship(
+        "LegajoConceptoModel",
+        back_populates="legajo",
+        cascade="all, delete-orphan"
+    )
     # 🔹 Relación con conceptos del empleado (preliquidación)
     #conceptos = relationship("LegajoConceptoModel", back_populates="legajo")
 

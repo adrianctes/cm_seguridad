@@ -17,3 +17,4 @@ class ConceptoModel(Base):
     clasificacion_concepto_id =  Column(Integer, ForeignKey("clasificacion_concepto.id"), nullable=False)
     clasificacion_concepto = relationship("ClasificacionConceptoModel", back_populates="concepto")
     liquidaciones = relationship("LiquidacionModel", back_populates="concepto")
+    legajos = relationship("LegajoConceptoModel", back_populates="concepto")

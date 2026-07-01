@@ -1,4 +1,4 @@
-from infrastructura.db.models.conceptos import ConceptoModel
+from infrastructura.db.models.conceptos_model import ConceptoModel
 from sqlalchemy.exc import SQLAlchemyError
 
 class MySQLConceptoRepository:
@@ -37,7 +37,6 @@ class MySQLConceptoRepository:
     
    
     def obtener_por_modalidad_pago(self,modalidad_pago_id: int):
-
         query = self.db.query(ConceptoModel)
 
         if modalidad_pago_id is not None:
@@ -45,7 +44,8 @@ class MySQLConceptoRepository:
             query = query.filter(
                 ConceptoModel.modalidad_pago_id.in_(
                     [modalidad_pago_id, 0]
-                )
+                ),
+                ConceptoModel.es_novedad == False
             )
 
         return query.all()

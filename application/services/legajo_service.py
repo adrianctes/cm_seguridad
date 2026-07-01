@@ -69,4 +69,14 @@ class LegajoService:
     def eliminar(self, legajo_id: int): 
         self.legajo_repo.eliminar(legajo_id)
 
+    # =========================
+    # LEGAJO CONCEPTOS 
+    # =========================
+    def listar_legajo_conceptos(self, legajo_id : int):
+        try:
+           return self.legajo_repo.listar_legajo_conceptos(legajo_id)
+        except Exception as e:
+            raise Exception(str(e))
+    
+
 

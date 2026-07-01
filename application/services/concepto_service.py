@@ -29,7 +29,7 @@ class ConceptoService:
     # 🔹 Obtener por ID
     def obtener(self, id: int):
         concepto = self.repo.obtener(id)
-        print(concepto.__dict__)
+        
         if not concepto:
             raise ValueError("Concepto no encontrado")
         return concepto
