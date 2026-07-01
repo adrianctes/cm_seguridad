@@ -9,6 +9,7 @@ class LegajoConcepto:
         legajo_id: int,
         concepto_id: int,
         valor: float,
+        cantidad : float,
         activo: bool = True,
         id: Optional[int] = None
     ):
@@ -17,4 +18,5 @@ class LegajoConcepto:
         self.legajo_id = legajo_id
         self.concepto_id = concepto_id
         self.valor = valor
+        self.cantidad = cantidad
         self.activo = activo

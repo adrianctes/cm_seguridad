@@ -36,6 +36,12 @@ class LegajoConceptoModel(Base):
         nullable=False,
         default=0
     )
+    
+    cantidad = Column(
+        Numeric(12, 2),
+        nullable=False,
+        default=1.0
+    )
 
     activo = Column(
         Boolean,

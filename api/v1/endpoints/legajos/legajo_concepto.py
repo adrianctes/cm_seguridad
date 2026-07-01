@@ -36,6 +36,7 @@ def crear_concepto_legajo( legajo_id: int,
     data: LegajoConceptoCreate,                      
     repo = Depends(get_legajo_concepto_repository)):
     try:
+      
         service = LegajoConceptoService(repo)
         return service.crear(legajo_id,data)
         
@@ -47,15 +48,35 @@ def crear_concepto_legajo( legajo_id: int,
         )
 
 
-@router.put(
-    "/{legajo_id}/conceptos/{concepto_legajo_id}"
-)
-def actualizar_concepto_legajo():
-    pass
+@router.put("/{legajo_id}/conceptos/{concepto_legajo_id}")
+def actualizar_concepto_legajo(legajo_id: int,
+    concepto_legajo_id : int,                           
+    data: LegajoConceptoUpdate,                      
+    repo = Depends(get_legajo_concepto_repository)):
+    try:
+      
+        service = LegajoConceptoService(repo)
+        return service.actualizar(concepto_legajo_id,data)
+        
+    except Exception as ex:
+        print(ex.args)
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )
 
-
-@router.delete(
-    "/{legajo_id}/conceptos/{concepto_legajo_id}"
-)
-def eliminar_concepto_legajo():
-    pass
+@router.delete("/{legajo_id}/conceptos/{concepto_legajo_id}")
+def eliminar_concepto_legajo(
+    concepto_legajo_id : int,                                          
+    repo = Depends(get_legajo_concepto_repository)):
+    try:
+      
+        service = LegajoConceptoService(repo)
+        return service.eliminar(concepto_legajo_id)
+        
+    except Exception as ex:
+        print(ex.args)
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )

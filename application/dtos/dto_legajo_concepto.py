@@ -25,6 +25,11 @@ class LegajoConceptoBase(BaseModel):
         ge=0
     )
 
+    cantidad : float = Field(
+        default=0,
+        ge=0
+    )
+
     activo: bool = True
 
 
@@ -46,7 +51,13 @@ class LegajoConceptoUpdate(BaseModel):
         ge=0
     )
 
+    cantidad: Optional[float] = Field(
+        default=None,
+        ge=0
+    )
+
     activo: Optional[bool] = None
+
 
 
 # =========================
@@ -55,8 +66,8 @@ class LegajoConceptoUpdate(BaseModel):
 class LegajoConceptoResponse(BaseModel):
     id: int
     legajo_id: int
-
     valor: float
+    cantidad:float
     activo: bool
 
     concepto: ConceptoResponse
