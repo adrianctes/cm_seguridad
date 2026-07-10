@@ -41,7 +41,23 @@ class MySQLLegajoRepository(ILegajoRepository):
 
         except SQLAlchemyError as e:
             raise Exception("Error al consultar legajos en base de datos")
+
+    def listar_activos(self):
+        try:
+            modelos = (
+                self.db.query(LegajoModel)
+                .options(joinedload(LegajoModel.categoria)) 
+                .options(joinedload(LegajoModel.modalidad_liquidacion))
+                .filter(LegajoModel.activo == 1)
+                .all()
+    )
+
+            return [self._to_entity(m) for m in modelos]
+
+        except SQLAlchemyError as e:
+            raise Exception("Error al consultar legajos en base de datos")
         
+
     def guardar(self, legajo: Legajo):
        
         if legajo.id:

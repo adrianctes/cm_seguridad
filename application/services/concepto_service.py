@@ -25,7 +25,7 @@ class ConceptoService:
     # 🔹 Listar
     def listar(self):
         return self.repo.listar()
-
+ 
     # 🔹 Obtener por ID
     def obtener(self, id: int):
         concepto = self.repo.obtener(id)
@@ -34,9 +34,9 @@ class ConceptoService:
             raise ValueError("Concepto no encontrado")
         return concepto
     
-    def obtener_por_modalidad_pago(self,modalidad_pago_id: int ):
+    def obtener_por_modalidad_pago(self,modalidad_pago_id: int, es_novedad:bool=False ):
 
-        return self.repo.obtener_por_modalidad_pago(modalidad_pago_id)
+        return self.repo.obtener_por_modalidad_pago(modalidad_pago_id,  es_novedad)
 
     # 🔹 Actualizar (PUT)
     def actualizar(self, concepto_id: int, data):

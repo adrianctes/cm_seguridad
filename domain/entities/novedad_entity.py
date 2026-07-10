@@ -1,4 +1,4 @@
-class ConceptoNovedad:
+class Novedad:
     def __init__(
         self,
         id=None,
@@ -6,7 +6,10 @@ class ConceptoNovedad:
         concepto_id=None,
         fecha_desde=None,
         fecha_hasta=None,
-        valor=None
+        valor=None,
+        cantidad = None,
+        activo = None,
+       
     ):
         self.id = id
         self.legajo_id = legajo_id
@@ -14,3 +17,6 @@ class ConceptoNovedad:
         self.fecha_desde = fecha_desde
         self.fecha_hasta = fecha_hasta
         self.valor = valor
+        self.cantidad = cantidad
+        self.activo = activo
+      

@@ -4,7 +4,7 @@ from urllib import request
 
 from fastapi import Depends
 from infrastructura.db.session import get_db
-from infrastructura.repositories.mysql_concepto_novedad_repository import MySQLConceptoNovedadRepository
+from infrastructura.repositories.mysql_novedad_repository import MySQLNovedadRepository
 from infrastructura.repositories.mysql_concepto_repository import MySQLConceptoRepository
 from infrastructura.repositories.mysql_historia_laboral_repository import MySQLHistoriaLaboralRepository
 from infrastructura.repositories.mysql_legajo_concepto_repositorio import MySQLLegajoConceptoRepository
@@ -40,14 +40,15 @@ def get_legajo_repository(db = Depends(get_db)):
 def get_legajo_concepto_repository(db = Depends(get_db)):
     return MySQLLegajoConceptoRepository(db)
 
+
+def get_novedad_repository(db = Depends(get_db)):
+    return MySQLNovedadRepository(db)
+
 def get_concepto_repository(db = Depends(get_db)):
     return MySQLConceptoRepository(db)
 
 def get_liquidacion_repository(db = Depends(get_db)):
     return MySQLLiquidacionRepository(db)
-
-def get_concepto_novedad_repository(db = Depends(get_db)):
-    return MySQLConceptoNovedadRepository(db)
 
 def get_usuario_repository(db = Depends(get_db)):
     return MySQLUsuarioRepository(db)

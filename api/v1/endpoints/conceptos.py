@@ -31,6 +31,7 @@ def listar( repo = Depends(get_concepto_repository)):
             status_code=422,
             detail=str(ex)
         )
+
    
 @router.get("/{id}", response_model=ConceptoResponse)
 def obtener(id: int, repo = Depends(get_concepto_repository)):
@@ -94,3 +95,23 @@ def eliminar(concepto_id: int, db: Session = Depends(get_concepto_repository)):
     #    raise HTTPException(status_code=404, detail="Concepto no encontrado")
 
     return {"message": "Concepto eliminado"}
+
+@router.get(
+    "/modalidad-pago/{modalidad_pago_id}/novedades",
+    response_model=list[ConceptoResponse]
+)
+def obtener_novedades_por_modalidad_pago(
+    modalidad_pago_id: int,
+    repo=Depends(get_concepto_repository)
+):
+    es_novedad=True
+    service = ConceptoService(repo)
+
+    try:
+        return service.obtener_por_modalidad_pago(modalidad_pago_id, es_novedad)
+
+    except Exception as ex:
+        raise HTTPException(
+            status_code=422,
+            detail=str(ex)
+        )

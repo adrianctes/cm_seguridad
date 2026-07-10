@@ -33,7 +33,7 @@ def crear_legajo(
         )
 
 # 🔹 OBTENER
-@router.get("/{legajo_id}", response_model=LegajoResponse)
+@router.get("/id/{legajo_id}", response_model=LegajoResponse)
 def obtener_legajo(
     legajo_id: int,
     repo = Depends(get_legajo_repository)
@@ -53,6 +53,20 @@ async def listar_legajos(repo = Depends(get_legajo_repository)):
     try:
         service = LegajoService(repo)
         return service.listar()
+        
+    except Exception as ex:
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )
+
+@router.get("/activos", response_model=List[LegajoResponse])
+async def listar_legajos_activos(repo = Depends(get_legajo_repository)):
+    try:
+        print("activos")
+        service = LegajoService(repo)
+       
+        return service.listar_activos()
         
     except Exception as ex:
         raise HTTPException(

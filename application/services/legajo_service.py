@@ -51,6 +51,12 @@ class LegajoService:
            return self.legajo_repo.listar()
         except Exception as e:
             raise Exception(str(e))
+    
+    def listar_activos(self):
+        try:
+           return self.legajo_repo.listar_activos()
+        except Exception as e:
+            raise Exception(str(e))
 
     # =========================
     # 🔹 ACTUALIZAR

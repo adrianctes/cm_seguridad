@@ -11,11 +11,12 @@ class IConceptoRepository(ABC):
     def listar(self):
         pass
 
+
     @abstractmethod
     def obtener(self, concepto_id: int):
         pass
 
-    def obtener_por_modalidad_pago(self, modalidad_pago_id:int):
+    def obtener_por_modalidad_pago(self, modalidad_pago_id:int, es_novedad: bool= False):
         pass
 
     @abstractmethod

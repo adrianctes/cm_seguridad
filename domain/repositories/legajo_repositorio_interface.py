@@ -18,6 +18,10 @@ class ILegajoRepository(ABC):
     @abstractmethod
     def listar(self) -> List[Legajo]:
         pass
+    
+    @abstractmethod
+    def listar_activos(self) -> List[Legajo]:
+        pass
 
     @abstractmethod
     def guardar(self, legajo: Legajo) -> Legajo:

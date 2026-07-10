@@ -1,21 +1,24 @@
 from fastapi import HTTPException
 
-from domain.entities.concepto_novedad_entity import ConceptoNovedad
+from domain.entities.novedad_entity import Novedad
 
-class ConceptoNovedadService:
+class NovedadService:
 
     def __init__(self, repo):
         self.repo = repo
 
     def crear(self, data):
-        novedad = ConceptoNovedad(
+     
+        novedad = Novedad(
             id=None,
             legajo_id=data.legajo_id,
             concepto_id=data.concepto_id,
             fecha_desde=data.fecha_desde,
             fecha_hasta=data.fecha_hasta,
-            valor=data.valor
+            valor=data.valor,
+            cantidad = data.cantidad
         )
+   
         return self.repo.crear(novedad)
 
     def obtener(self, id: int):
@@ -23,6 +26,13 @@ class ConceptoNovedadService:
         if not novedad:
             raise HTTPException(status_code=404, detail="No encontrado")
         return novedad
+    
+    def obtener_por_periodo(self,anio: int ,mes: int):
+        novedades = self.repo.obtener_por_periodo(anio, mes)
+
+        if not novedades:
+            raise HTTPException(status_code=404, detail="No encontrado")
+        return novedades
 
     def listar_por_legajo(self, legajo_id: int):
         return self.repo.listar_por_legajo(legajo_id)
@@ -36,14 +46,12 @@ class ConceptoNovedadService:
         if not novedad:
             raise HTTPException(status_code=404, detail="No encontrado")
 
-        if data.fecha_desde is not None:
-            novedad.fecha_desde = data.fecha_desde
-
-        if data.fecha_hasta is not None:
-            novedad.fecha_hasta = data.fecha_hasta
-
-        if data.valor is not None:
-            novedad.valor = data.valor
+        novedad.legajo_id = data.legajo_id
+        novedad.concepto_id = data.concepto_id
+        novedad.fecha_desde = data.fecha_desde
+        novedad.fecha_hasta = data.fecha_hasta
+        novedad.valor = data.valor
+        novedad.cantidad = data.cantidad
 
         return self.repo.actualizar(novedad)
 

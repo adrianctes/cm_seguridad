@@ -32,11 +32,12 @@ class MySQLConceptoRepository:
     def listar(self):
         return self.db.query(ConceptoModel).all()
     
+    
     def obtener(self, id: int):
         return self.db.query(ConceptoModel).filter_by(id=id).first()
     
    
-    def obtener_por_modalidad_pago(self,modalidad_pago_id: int):
+    def obtener_por_modalidad_pago(self,modalidad_pago_id: int, es_novedad:bool=False):
         query = self.db.query(ConceptoModel)
 
         if modalidad_pago_id is not None:
@@ -45,7 +46,7 @@ class MySQLConceptoRepository:
                 ConceptoModel.modalidad_pago_id.in_(
                     [modalidad_pago_id, 0]
                 ),
-                ConceptoModel.es_novedad == False
+                ConceptoModel.es_novedad == es_novedad
             )
 
         return query.all()
