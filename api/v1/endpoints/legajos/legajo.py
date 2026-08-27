@@ -9,7 +9,7 @@ from application.dtos.dto_legajo import (
     LegajoResponse
 )
 from application.services.legajo_service import LegajoService
-from core.dependencias import get_legajo_repository
+from core.dependencias import get_datos_fijos_liquidacion_repository, get_legajo_repository
 
 router = APIRouter(
     prefix="/legajos",
@@ -63,7 +63,7 @@ async def listar_legajos(repo = Depends(get_legajo_repository)):
 @router.get("/activos", response_model=List[LegajoResponse])
 async def listar_legajos_activos(repo = Depends(get_legajo_repository)):
     try:
-        print("activos")
+
         service = LegajoService(repo)
        
         return service.listar_activos()
@@ -74,6 +74,32 @@ async def listar_legajos_activos(repo = Depends(get_legajo_repository)):
             detail=str(ex)
         )
 
+from typing import List
+from fastapi import APIRouter, Depends, HTTPException
+
+@router.get(
+    "/disponibles-para-liquidacion",
+    response_model=list[LegajoResponse]
+)
+
+@router.get("/modalidad", response_model=List[LegajoResponse])
+async def listar_por_modalidad(
+    modalidad_liquidacion_id: int,
+    repo=Depends(get_legajo_repository)
+):
+    try: 
+        service = LegajoService(repo)
+
+        return service.listar_por_modalidad(
+            modalidad_liquidacion_id
+        )
+
+    except Exception as ex:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )
 
 # 🔹 ACTUALIZAR
 @router.put("/{legajo_id}", response_model=LegajoResponse)

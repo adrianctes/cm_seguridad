@@ -1,3 +1,6 @@
+from domain.entities.concepto_entity import Concepto
+
+
 class Novedad:
     def __init__(
         self,
@@ -9,6 +12,7 @@ class Novedad:
         valor=None,
         cantidad = None,
         activo = None,
+        concepto: Concepto = None
        
     ):
         self.id = id
@@ -19,4 +23,5 @@ class Novedad:
         self.valor = valor
         self.cantidad = cantidad
         self.activo = activo
+        self.concepto = concepto
       

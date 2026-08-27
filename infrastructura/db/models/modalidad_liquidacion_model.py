@@ -10,3 +10,4 @@ class ModalidadLiquidacionModel(Base):
     nombre = Column(String(60), nullable=False)
  
     legajos = relationship("LegajoModel", back_populates="modalidad_liquidacion")
+    datos_fijos_liquidacion =  relationship("DatosFijosLiquidacionModel", back_populates="modalidad_liquidacion")

@@ -1,33 +1,216 @@
-from pydantic import BaseModel, Field
+from decimal import Decimal
 from typing import Optional
+from datetime import date, datetime
+from pydantic import BaseModel, Field
+from application.dtos.dto_legajo import LegajoResponse
 
-from application.dtos.dto_concepto import ConceptoResponse
 
+# ============================================================
+# REQUEST - SOLICITUD DE LIQUIDACIÓN
+# ============================================================
 
-# 🔹 Base
-class LiquidacionBase(BaseModel):
+class LiquidacionRequest(BaseModel):
+    """
+    Datos necesarios para ejecutar el cálculo
+    de una liquidación.
+    """
+
+    datos_fijos_id: int = Field(..., gt=0)
     legajo_id: int = Field(..., gt=0)
-    concepto_id: int = Field(..., gt=0)
-    valor: float = Field(..., description="Importe del concepto")
+
+
+# ============================================================
+# BASE - LIQUIDACIÓN
+# ============================================================
+
+class LiquidacionBase(BaseModel):
+
+    legajo_id: int = Field(..., gt=0)
+
+    datos_fijos_liquidacion_id: int = Field(..., gt=0)
+
     tipo_liquidacion_id: int = Field(..., gt=0)
 
 
-# 🔹 Create
+# ============================================================
+# DETALLE DE LIQUIDACIÓN
+# ============================================================
+
+class LiquidacionDetalleDto(BaseModel):
+
+    concepto_id: int = Field(..., gt=0)
+
+    cantidad: Decimal
+
+    valor: Decimal
+
+    haber: Decimal
+
+    retencion: Decimal
+
+    total: Decimal
+
+
+# ============================================================
+# CREATE - PERSISTIR LIQUIDACIÓN
+# ============================================================
+
 class LiquidacionCreate(LiquidacionBase):
-    pass
+
+    lineas: list[LiquidacionDetalleDto]
 
 
-# 🔹 Update
-class LiquidacionUpdate(BaseModel):
-    #legajo_id: Optional[int] = Field(None, gt=0)
-    #concepto_id: Optional[int] = Field(None, gt=0)
-    valor: float
-    #tipo_liquidacion_id: Optional[int] = Field(None, gt=0)
+# ============================================================
+# RESPONSE - LIQUIDACIÓN PERSISTIDA
+# ============================================================
 
-
-# 🔹 Response
 class LiquidacionResponse(LiquidacionBase):
+
     id: int
-    concepto: ConceptoResponse | None = None  
+
+    legajo: LegajoResponse | None = None
+
+    total_haberes: Decimal
+
+    total_retenciones: Decimal
+
+    total_neto: Decimal
+
+    class Config:
+        from_attributes = True
+
+
+# ============================================================
+# DETALLE DEL CÁLCULO DE LIQUIDACIÓN
+# ============================================================
+
+class LiquidacionDetalleResponse(BaseModel):
+
+    concepto_id: int
+
+    codigo: str
+
+    concepto: str
+
+    clasificacion_codigo: str
+
+    clasificacion_nombre: str
+
+    clasificacion_tipo: str
+
+    cantidad: Decimal
+
+    valor: Decimal
+
+    tipo_calculo: str
+
+    formula: Optional[str] = None
+
+    es_novedad: bool
+
+    orden: int
+
+    haber: Decimal
+
+    retencion: Decimal
+
+    total: Decimal
+
+
+# ============================================================
+# TOTALES DEL CÁLCULO
+# ============================================================
+
+class LiquidacionTotalesResponse(BaseModel):
+
+    haberes: Decimal
+
+    descuentos: Decimal
+
+
+# ============================================================
+# RESPONSE - RESULTADO DEL CÁLCULO
+# ============================================================
+
+class LiquidacionCalculoResponse(BaseModel):
+
+    detalle: list[LiquidacionDetalleResponse]
+
+    totales: LiquidacionTotalesResponse
+
+    neto: Decimal
+
+
+class LiquidacionDetalleVisualizacionResponse(BaseModel):
+
+    id: int
+
+    concepto_id: int
+
+    codigo: str
+
+    concepto: str
+
+    cantidad: Decimal
+
+    valor: Decimal
+
+    haber: Decimal
+
+    retencion: Decimal
+
+    total: Decimal
+
+    class Config:
+        from_attributes = True
+
+class LiquidacionListadoResponse(BaseModel):
+
+    id: int
+
+    fecha: datetime
+
+    periodo: int
+
+    modalidad: str
+
+    numero: int
+
+    legajo_id: int
+
+
+    ayn: str
+
+    total_haberes: Decimal
+    total_retenciones: Decimal
+    total_neto: Decimal
+
+
+    class Config:
+        from_attributes = True
+
+
+class LiquidacionVisualizacionResponse(BaseModel):
+
+    id: int
+
+    fecha: datetime
+
+    periodo: int
+
+    modalidad: str
+
+    numero: int
+
+    legajo_id: int
+
+    ayn: str
+
+    total_haberes: Decimal
+    total_retenciones: Decimal
+    total_neto: Decimal
+
+    lineas: list[LiquidacionDetalleVisualizacionResponse]
+
     class Config:
         from_attributes = True

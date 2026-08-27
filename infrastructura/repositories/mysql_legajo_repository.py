@@ -5,7 +5,8 @@ from infrastructura.db.models.legajo_model import LegajoModel
 from infrastructura.db.models.categoria_model import CategoriaModel
 from sqlalchemy.orm import joinedload
 
-from infrastructura.db.models.modalidad_liquidacion import ModalidadLiquidacionModel
+from infrastructura.db.models.liquidacion_model import LiquidacionModel
+from infrastructura.db.models.modalidad_liquidacion_model import ModalidadLiquidacionModel
 
 
 class MySQLLegajoRepository(ILegajoRepository):
@@ -56,7 +57,57 @@ class MySQLLegajoRepository(ILegajoRepository):
 
         except SQLAlchemyError as e:
             raise Exception("Error al consultar legajos en base de datos")
+
+    def listar_por_modalidad(
+            self,
+            modalidad_liquidacion_id: int
+        ):
+          
+            registros = (
+
+                self.db.query(LegajoModel)
+
+                .filter(
+
+                    LegajoModel.modalidad_liquidacion_id
+                    == modalidad_liquidacion_id,
+
+                    LegajoModel.activo == True
+
+                )
+
+                .all()
+
+            )
+
+            return [
+                self._to_entity(x)
+                for x in registros
+            ]
         
+    def buscar_legajos_disponibles_para_liquidacion(
+        self,
+        modalidad_liquidacion_id: int,
+        datos_fijos_liquidacion_id: int
+    ):
+
+        subquery = (
+            self.db.query(LiquidacionModel.legajo_id)
+            .filter(
+                LiquidacionModel.datos_fijos_liquidacion_id
+                == datos_fijos_liquidacion_id
+            )
+        )
+
+        return (
+            self.db.query(LegajoModel)
+            .filter(
+                LegajoModel.modalidad_liquidacion_id
+                == modalidad_liquidacion_id,
+                ~LegajoModel.id.in_(subquery)
+            )
+            .all()
+        )
 
     def guardar(self, legajo: Legajo):
        
@@ -87,7 +138,7 @@ class MySQLLegajoRepository(ILegajoRepository):
               self.db.add(model)
             self.db.commit()
             self.db.refresh(model)
-            print(model.__dict__)
+           
         except SQLAlchemyError as e:
             print(e)
             error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]

@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from pydantic import BaseModel
 
 class ModalidadLiquidacionResponse(BaseModel):
@@ -9,4 +11,4 @@ class ModalidadLiquidacionResponse(BaseModel):
         from_attributes = True
 
 class LiquidacionUpdateValor(BaseModel):
-    valor: float 
+    valor: Decimal 

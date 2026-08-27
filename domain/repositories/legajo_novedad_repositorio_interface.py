@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import date
 from typing import List
 from domain.entities.novedad_entity import Novedad
 
@@ -14,7 +15,9 @@ class LegajoNovedadRepository(ABC):
         pass
 
     @abstractmethod
-    def obtener_por_periodo(self, anio: int, mes: int) -> Novedad:
+    def obtener_por_periodo(self, fecha : date,
+                                  tipo_busqueda: str | None = None,
+                                  busqueda: str | None = None,) -> List[Novedad]:
         pass
  
     @abstractmethod

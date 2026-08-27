@@ -4,6 +4,7 @@ from urllib import request
 
 from fastapi import Depends
 from infrastructura.db.session import get_db
+from infrastructura.repositories.mysql_datos_fijos_liquidacion_repositorio import MySQLDatosFijosLiquidacionRepository
 from infrastructura.repositories.mysql_novedad_repository import MySQLNovedadRepository
 from infrastructura.repositories.mysql_concepto_repository import MySQLConceptoRepository
 from infrastructura.repositories.mysql_historia_laboral_repository import MySQLHistoriaLaboralRepository
@@ -46,6 +47,9 @@ def get_novedad_repository(db = Depends(get_db)):
 
 def get_concepto_repository(db = Depends(get_db)):
     return MySQLConceptoRepository(db)
+
+def get_datos_fijos_liquidacion_repository(db = Depends(get_db)):
+    return MySQLDatosFijosLiquidacionRepository(db)
 
 def get_liquidacion_repository(db = Depends(get_db)):
     return MySQLLiquidacionRepository(db)

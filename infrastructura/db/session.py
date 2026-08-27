@@ -11,8 +11,10 @@ DATABASE_URL = settings.DATABASE_URL
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
+    pool_size=10,
+    max_overflow = 5,
     pool_recycle=3600,
-    pool_timeout=10,
+    pool_timeout=30,
     connect_args={
         "connect_timeout": 5
     }

@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import HTTPException
 
 from domain.entities.novedad_entity import Novedad
@@ -27,8 +29,11 @@ class NovedadService:
             raise HTTPException(status_code=404, detail="No encontrado")
         return novedad
     
-    def obtener_por_periodo(self,anio: int ,mes: int):
-        novedades = self.repo.obtener_por_periodo(anio, mes)
+    def obtener_por_periodo(self, fecha: date,
+                                  tipo_busqueda: str | None = None,
+                                  busqueda: str | None = None ):
+        
+        novedades = self.repo.obtener_por_periodo(fecha, tipo_busqueda, busqueda)
 
         if not novedades:
             raise HTTPException(status_code=404, detail="No encontrado")

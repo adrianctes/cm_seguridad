@@ -1,4 +1,4 @@
-from infrastructura.db.models.modalidad_liquidacion import ModalidadLiquidacionModel
+from infrastructura.db.models.modalidad_liquidacion_model import ModalidadLiquidacionModel
 
 class MySQLModalidadLiquidacionRepository:
 

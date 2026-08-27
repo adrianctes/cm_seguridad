@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 from domain.entities.banco_entity import Banco
 from domain.entities.categoria_entity import Categoria
 from domain.entities.modalidad_liquidacion_entity import ModalidadLiquidacion
@@ -25,7 +26,7 @@ class Legajo:
         cbu : str  | None = None,
         fecha_ingreso_actual :  date | None = None,
         modalidad_pago_id:  int| None = None,
-        valor_modalidad_pago: float  | None = None,
+        valor_modalidad_pago: Decimal  | None = None,
     ):
         self.id = id
         self.apellido = apellido

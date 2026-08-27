@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from pydantic import BaseModel, Field, constr
 from datetime import date
 from typing import Optional
@@ -24,7 +26,7 @@ class LegajoBase(BaseModel):
     telefono: Optional[str] = None
     banco_id: Optional[int] = None
     cbu: Optional[str] = None
-    valor_modalidad_pago :Optional[float] = None
+    valor_modalidad_pago :Optional[Decimal] = None
 
    
 

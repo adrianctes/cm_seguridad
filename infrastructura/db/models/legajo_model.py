@@ -1,4 +1,6 @@
-from sqlalchemy import Column, DateTime, Float, Integer, String,  Boolean, ForeignKey
+from decimal import Decimal
+
+from sqlalchemy import Column, DateTime, Integer, Numeric, String,  Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from infrastructura.db.session import Base
 
@@ -24,7 +26,7 @@ class LegajoModel(Base):
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
     modalidad_liquidacion_id = Column(Integer, ForeignKey("modalidad_liquidacion.id"), nullable=False)
     modalidad_pago_id = Column(Integer,  nullable=False)
-    valor_modalidad_pago =  Column(Float, nullable=False)
+    valor_modalidad_pago = Column(Numeric(10, 2), nullable=False)
 
     # 🔹 Relaciones (opcional pero recomendado)
     categoria = relationship("CategoriaModel", back_populates="legajos")
@@ -45,4 +47,4 @@ class LegajoModel(Base):
     #conceptos = relationship("LegajoConceptoModel", back_populates="legajo")
 
     # 🔹 Relación con liquidaciones generadas
-    #liquidaciones = relationship("LiquidacionGeneradaModel", back_populates="legajo")
+    liquidacion = relationship("LiquidacionModel", back_populates="legajo")

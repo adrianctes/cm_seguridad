@@ -24,6 +24,11 @@ class ILegajoRepository(ABC):
         pass
 
     @abstractmethod
+    def listar_por_modalidad(self) -> List[Legajo]:
+            pass
+    
+
+    @abstractmethod
     def guardar(self, legajo: Legajo) -> Legajo:
         pass
 

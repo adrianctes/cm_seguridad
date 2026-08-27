@@ -1,9 +1,10 @@
+import calendar
 from datetime import date
 
 from infrastructura.db.models.conceptos_model import ConceptoModel
 from infrastructura.db.models.legajo_model import LegajoModel
-from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import select, and_, or_
 from domain.entities.novedad_entity import Novedad
 from domain.repositories.legajo_novedad_repositorio_interface import LegajoNovedadRepository
 from infrastructura.db.models.novedad_model import NovedadModel
@@ -26,7 +27,6 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
                 cantidad = novedad.cantidad,
                 activo = novedad.activo
             )
-            print(model)
             self.db.add(model)
             self.db.commit()
             self.db.refresh(model)
@@ -42,11 +42,15 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
         return self._to_entity(model) if model else None
     
     # 🔹 Obtener por PERIODO
-    def obtener_por_periodo(self, anio: int, mes: int):
-        from datetime import date
-
-        fecha_inicio = date(anio, mes, 1)
-        fecha_fin = date(anio + 1, 1, 1) if mes == 12 else date(anio, mes + 1, 1)
+    def obtener_por_periodo(self, fecha: date,   
+                                  tipo_busqueda: str | None = None,
+                                  busqueda: str | None = None):
+     
+        fecha_inicio = fecha
+        if fecha.month == 12:
+            fecha_fin = date(fecha.year + 1, 1, 1)
+        else:
+            fecha_fin = date(fecha.year, fecha.month + 1, 1)
 
         stmt = (
             select(
@@ -68,12 +72,37 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
                 ConceptoModel.nombre.label("concepto")
             )
             .join(LegajoModel, LegajoModel.id == NovedadModel.legajo_id)
-            .join(ConceptoModel, ConceptoModel.id == NovedadModel.concepto_id)
-            .where(
-                NovedadModel.fecha_desde >= fecha_inicio,
-                NovedadModel.fecha_desde < fecha_fin
-            )
+            .join(ConceptoModel, ConceptoModel.id == NovedadModel.concepto_id)    
         )
+        filtros = [
+            NovedadModel.fecha_desde >= fecha_inicio,
+            NovedadModel.fecha_desde < fecha_fin
+        ]
+
+        if busqueda:
+
+            if tipo_busqueda == "legajo":
+                filtros.append(NovedadModel.legajo_id == int(busqueda))
+
+            elif tipo_busqueda == "ayn":
+                filtros.append(
+                    or_(
+                        LegajoModel.apellido.ilike(f"%{busqueda}%"),
+                        LegajoModel.nombre.ilike(f"%{busqueda}%")
+                    )
+                )
+
+            elif tipo_busqueda == "codigo":
+                filtros.append(
+                    NovedadModel.codigo.ilike(f"%{busqueda}%")
+                )
+
+            elif tipo_busqueda == "concepto":
+                filtros.append(
+                    ConceptoModel.nombre.ilike(f"%{busqueda}%")
+                )
+        
+        stmt = stmt.where(and_(*filtros))
 
         rows = self.db.execute(stmt).mappings().all()
 
@@ -87,6 +116,34 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
         )
 
         return [self._to_entity(m) for m in modelos]
+
+    def listar_por_fechas(
+            self,
+            legajo_id: int,
+            fecha_desde: date,
+            fecha_hasta: date
+        ):
+            print( legajo_id,
+                        fecha_desde,
+                        fecha_hasta)
+            modelos = (
+                self.db.query(NovedadModel)
+                .options(
+                    joinedload(NovedadModel.concepto)
+                    .joinedload(ConceptoModel.clasificacion_concepto)   
+                )
+                .filter(
+                    NovedadModel.legajo_id == legajo_id,
+                    NovedadModel.fecha_desde <= fecha_hasta,
+                    (
+                        (NovedadModel.fecha_hasta == None)
+                        | (NovedadModel.fecha_hasta >= fecha_desde)
+                    )
+                )
+                .all()
+            )
+
+            return [self._to_entity(x) for x in modelos]
 
     # 🔹 Listar vigentes (🔥 clave para liquidación)
     def listar_vigentes(self, legajo_id: int, fecha):
@@ -144,5 +201,6 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
             fecha_hasta=model.fecha_hasta,
             valor=model.valor,
             cantidad = model.cantidad,
-            activo = model.activo
+            activo = model.activo,
+            concepto = model.concepto
         )

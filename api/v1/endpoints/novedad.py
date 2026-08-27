@@ -43,15 +43,15 @@ def obtener(
 # 🔹 Obtener por PERIODO
 @router.get("", response_model=List[NovedadResponse])
 def obtener_por_periodo(
-    periodo: int,
+    fecha: date,
+    tipo_busqueda: str | None = None,
+    busqueda: str | None = None,
     repo = Depends(get_novedad_repository)
 ):
     service = NovedadService(repo)
     try:
-        anio = periodo // 100
-        mes = periodo % 100
-        
-        return service.obtener_por_periodo(anio, mes)
+             
+        return service.obtener_por_periodo(fecha, tipo_busqueda, busqueda)
     except Exception as ex:
         print(ex.args)
         raise HTTPException(

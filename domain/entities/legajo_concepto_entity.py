@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 from typing import Optional
 
 
@@ -8,8 +9,8 @@ class LegajoConcepto:
         self,
         legajo_id: int,
         concepto_id: int,
-        valor: float,
-        cantidad : float,
+        valor: Decimal,
+        cantidad : Decimal,
         activo: bool = True,
         id: Optional[int] = None
     ):

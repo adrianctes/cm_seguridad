@@ -1,4 +1,5 @@
 from domain.entities.legajo_entity import Legajo
+from domain.repositories.datos_fijos_liquidacion_repository_interface import IDatosFijosLiquidacionRepository
 from domain.repositories.legajo_repositorio_interface import ILegajoRepository
 
 
@@ -42,7 +43,29 @@ class LegajoService:
                 raise ValueError("Legajo no encontrado")
             return legajo
        
+    def buscar_legajos_disponibles_para_liquidacion(
+        self,
+        repo_datos_fijos: IDatosFijosLiquidacionRepository,
+        datos_fijos_liquidacion_id: int
+    ):
 
+        datos_fijos = repo_datos_fijos.obtener(
+            datos_fijos_liquidacion_id
+        )
+
+        if not datos_fijos:
+            raise ValueError(
+                "No existen los datos fijos de liquidación."
+            )
+
+        return self.legajo_repo.buscar_legajos_disponibles_para_liquidacion(
+            modalidad_liquidacion_id=
+                datos_fijos.modalidad_liquidacion_id,
+
+            datos_fijos_liquidacion_id=
+                datos_fijos_liquidacion_id
+        )
+    
     # =========================
     # 🔹 LISTAR
     # =========================
@@ -58,6 +81,14 @@ class LegajoService:
         except Exception as e:
             raise Exception(str(e))
 
+    def listar_por_modalidad(
+        self,
+        modalidad_liquidacion_id: int
+    ):
+        return self.legajo_repo.listar_por_modalidad(
+            modalidad_liquidacion_id
+        )
+    
     # =========================
     # 🔹 ACTUALIZAR
     # =========================

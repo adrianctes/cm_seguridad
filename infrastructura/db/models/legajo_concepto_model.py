@@ -64,6 +64,11 @@ conceptos = relationship(
     "LegajoConceptoModel",
     back_populates="legajo",
     cascade="all, delete-orphan"
-
 )
+
 concepto = relationship("ConceptoModel")
+
+clasificacion_conceptos = relationship(
+        "ClasificacionConceptoModel",
+        back_populates="legajo_conceptos"
+    )

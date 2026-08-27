@@ -1,3 +1,8 @@
+from decimal import Decimal
+
+from pydantic import BaseModel, Field
+from typing import Optional
+
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -20,12 +25,12 @@ class ConceptoResponse(BaseModel):
 class LegajoConceptoBase(BaseModel):
     concepto_id: int
 
-    valor: float = Field(
+    valor: Decimal = Field(
         default=0,
         ge=0
     )
 
-    cantidad : float = Field(
+    cantidad : Decimal = Field(
         default=0,
         ge=0
     )
@@ -46,12 +51,12 @@ class LegajoConceptoCreate(LegajoConceptoBase):
 class LegajoConceptoUpdate(BaseModel):
     concepto_id: Optional[int] = None
 
-    valor: Optional[float] = Field(
+    valor: Optional[Decimal] = Field(
         default=None,
         ge=0
     )
 
-    cantidad: Optional[float] = Field(
+    cantidad: Optional[Decimal] = Field(
         default=None,
         ge=0
     )
@@ -66,8 +71,8 @@ class LegajoConceptoUpdate(BaseModel):
 class LegajoConceptoResponse(BaseModel):
     id: int
     legajo_id: int
-    valor: float
-    cantidad:float
+    valor: Decimal
+    cantidad:Decimal
     activo: bool
 
     concepto: ConceptoResponse

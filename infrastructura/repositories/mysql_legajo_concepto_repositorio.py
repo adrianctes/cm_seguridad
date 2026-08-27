@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from domain.repositories.legajo_conceptos_repositorio_interface import (
     ILegajoConceptoRepository
@@ -8,6 +8,7 @@ from domain.entities.legajo_concepto_entity import (
     LegajoConcepto
 )
 
+from infrastructura.db.models.conceptos_model import ConceptoModel
 from infrastructura.db.models.legajo_concepto_model import (
     LegajoConceptoModel
 )
@@ -63,6 +64,10 @@ class MySQLLegajoConceptoRepository(
             self.db.query(
                 LegajoConceptoModel
             )
+           .options(
+        joinedload(LegajoConceptoModel.concepto)
+        .joinedload(ConceptoModel.clasificacion_concepto)
+    )
         )
 
         if legajo_id:

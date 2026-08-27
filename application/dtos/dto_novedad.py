@@ -1,5 +1,7 @@
 # application/dtos/dto_legajo_novedad.py
 
+from decimal import Decimal
+
 from pydantic import BaseModel, computed_field
 from datetime import date
 from typing import Optional
@@ -11,8 +13,8 @@ class NovedadCreate(BaseModel):
     concepto_id : int
     fecha_desde: date
     fecha_hasta:date
-    cantidad: float
-    valor : float
+    cantidad: Decimal
+    valor : Decimal
     activo: bool
     
 
@@ -28,8 +30,8 @@ class NovedadResponse(BaseModel):
     legajo_id: int
     fecha_desde: date
     fecha_hasta:date = None
-    cantidad: Optional[float] = None
-    valor : Optional[float] = None
+    cantidad: Optional[Decimal] = None
+    valor : Optional[Decimal] = None
     activo: Optional[bool] = None
     concepto_id : int
     codigo_concepto:Optional[str] = None
@@ -40,7 +42,8 @@ class NovedadResponse(BaseModel):
     @computed_field
     @property
     def ayn(self) -> str:
-        return f"{self.apellido} {self.nombre}"
+        return f"{self.apellido or ''} {self.nombre or ''}".strip()
+    
     class Config:
         from_attributes = True
 
