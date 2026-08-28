@@ -70,8 +70,8 @@ api_router.include_router(conceptos.router,
                            dependencies=[Depends(get_current_user)])
 api_router.include_router(datos_fijos_liquidacion.router,
                            dependencies=[Depends(get_current_user)])
-api_router.include_router(liquidacion.router,
-                           dependencies=[Depends(get_current_user)])
+""" api_router.include_router(liquidacion.router,
+                           dependencies=[Depends(get_current_user)]) """
 api_router.include_router(novedad.router,
                            dependencies=[Depends(get_current_user)])
 
@@ -80,6 +80,7 @@ api_router.include_router(categorias.router)
 api_router.include_router(modalidad.router)
 api_router.include_router(historia_laboral.router)
 api_router.include_router(clasificacion_concepto.router)
+api_router.include_router(liquidacion.router)
 
 
 
