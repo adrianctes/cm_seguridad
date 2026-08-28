@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import FileResponse
+import os
 from sqlalchemy.orm import Session
 from application.dtos.dto_legajo import LegajoResponse
 from application.dtos.dto_liquidacion import (
@@ -22,6 +24,8 @@ from core.dependencias import (
 from application.services.proceso_liquidacion_service import ProcesoLiquidacionService
 from application.services.liquidacion_service import LiquidacionService
 from typing import List
+
+from infrastructura.pdf.liquidacion_impresion import LiquidacionImpresion
 
 router = APIRouter(prefix="/liquidaciones")
 
@@ -192,3 +196,68 @@ async def liquidar(
         request.datos_fijos_id,
         request.legajo_id
     )
+
+@router.get("/{liquidacion_id}/pdf")
+def imprimir_liquidacion(
+    liquidacion_id: int,
+    repo=Depends(get_liquidacion_repository)
+):
+
+    try:
+
+        service = LiquidacionService(repo)
+
+        data = service.obtener_por_id(
+            liquidacion_id
+        )
+
+        if not data:
+            raise HTTPException(
+                status_code=404,
+                detail="No se encontró la liquidación."
+            )
+
+        # ---------------------------------------------
+        # Convertir Pydantic -> diccionario
+        # ---------------------------------------------
+
+        data = data.model_dump()
+
+        # ---------------------------------------------
+        # Ruta del PDF
+        # ---------------------------------------------
+
+        ruta = os.path.abspath(
+            f"liquidacion_{liquidacion_id}.pdf"
+        )
+
+        # ---------------------------------------------
+        # Generar PDF
+        # ---------------------------------------------
+
+        impresion = LiquidacionImpresion(
+            data,
+            ruta
+        )
+
+        impresion.generar()
+
+        # ---------------------------------------------
+        # Devolver PDF
+        # ---------------------------------------------
+
+        return FileResponse(
+            path=ruta,
+            media_type="application/pdf",
+            filename=f"liquidacion_{liquidacion_id}.pdf"
+        )
+
+    except HTTPException:
+        raise
+
+    except Exception as ex:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )
