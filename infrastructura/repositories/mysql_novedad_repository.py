@@ -8,6 +8,7 @@ from sqlalchemy import select, and_, or_
 from domain.entities.novedad_entity import Novedad
 from domain.repositories.legajo_novedad_repositorio_interface import LegajoNovedadRepository
 from infrastructura.db.models.novedad_model import NovedadModel
+from infrastructura.db.models.liquidacion_detalle_model import LiquidacionDetalleModel
 
 
 class MySQLNovedadRepository(LegajoNovedadRepository):
@@ -42,11 +43,15 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
         return self._to_entity(model) if model else None
     
     # 🔹 Obtener por PERIODO
-    def obtener_por_periodo(self, fecha: date,   
-                                  tipo_busqueda: str | None = None,
-                                  busqueda: str | None = None):
-     
+    def obtener_por_periodo(
+        self,
+        fecha: date,
+        tipo_busqueda: str | None = None,
+        busqueda: str | None = None
+    ):
+
         fecha_inicio = fecha
+
         if fecha.month == 12:
             fecha_fin = date(fecha.year + 1, 1, 1)
         else:
@@ -60,20 +65,35 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
                 NovedadModel.cantidad,
                 NovedadModel.valor,
                 NovedadModel.activo,
-              
 
                 LegajoModel.id.label("legajo_id"),
                 LegajoModel.apellido,
                 LegajoModel.nombre,
-               
 
                 ConceptoModel.id.label("concepto_id"),
                 ConceptoModel.codigo.label("codigo_concepto"),
-                ConceptoModel.nombre.label("concepto")
+                ConceptoModel.nombre.label("concepto"),
+
+                # Liquidación
+                LiquidacionDetalleModel.id.label(
+                    "liquidacion_detalle_id"
+                ),
             )
-            .join(LegajoModel, LegajoModel.id == NovedadModel.legajo_id)
-            .join(ConceptoModel, ConceptoModel.id == NovedadModel.concepto_id)    
+            .join(
+                LegajoModel,
+                LegajoModel.id == NovedadModel.legajo_id
+            )
+            .join(
+                ConceptoModel,
+                ConceptoModel.id == NovedadModel.concepto_id
+            )
+            .outerjoin(
+                LiquidacionDetalleModel,
+                LiquidacionDetalleModel.legajo_novedad_id
+                == NovedadModel.id
+            )
         )
+
         filtros = [
             NovedadModel.fecha_desde >= fecha_inicio,
             NovedadModel.fecha_desde < fecha_fin
@@ -82,7 +102,9 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
         if busqueda:
 
             if tipo_busqueda == "legajo":
-                filtros.append(NovedadModel.legajo_id == int(busqueda))
+                filtros.append(
+                    NovedadModel.legajo_id == int(busqueda)
+                )
 
             elif tipo_busqueda == "ayn":
                 filtros.append(
@@ -101,11 +123,11 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
                 filtros.append(
                     ConceptoModel.nombre.ilike(f"%{busqueda}%")
                 )
-        
+
         stmt = stmt.where(and_(*filtros))
 
         rows = self.db.execute(stmt).mappings().all()
-
+        print(rows)
         return rows
     # 🔹 Listar por legajo
     def listar_por_legajo(self, legajo_id: int):

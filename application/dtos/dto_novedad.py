@@ -38,6 +38,7 @@ class NovedadResponse(BaseModel):
     concepto : Optional[str] = None
     apellido : Optional[str] = None
     nombre : Optional[str] = None
+    liquidacion_detalle_id : Optional[int] = None
 
     @computed_field
     @property

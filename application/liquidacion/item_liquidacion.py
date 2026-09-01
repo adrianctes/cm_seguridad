@@ -20,11 +20,11 @@ class ItemLiquidacion:
 
     tipo_calculo: str
     formula: str | None
-
+   
     es_novedad: bool
 
     orden: int
-
+    novedad_id: int | None = None
     haber: Decimal = 0
     retencion: Decimal = 0
     total: Decimal = 0

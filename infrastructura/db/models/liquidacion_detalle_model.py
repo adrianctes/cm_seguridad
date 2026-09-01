@@ -26,6 +26,12 @@ class LiquidacionDetalleModel(Base):
         nullable=False
     )
 
+    legajo_novedad_id = Column(
+        Integer,
+        ForeignKey("legajo_novedad.id"),
+        nullable=True
+    )
+
     cantidad = Column(
         Numeric(10, 2),
         nullable=False
@@ -60,5 +66,11 @@ class LiquidacionDetalleModel(Base):
     # Concepto
     concepto = relationship(
         "ConceptoModel",
+        lazy="joined"
+    )
+
+    # Novedad
+    novedad = relationship(
+        "NovedadModel",
         lazy="joined"
     )

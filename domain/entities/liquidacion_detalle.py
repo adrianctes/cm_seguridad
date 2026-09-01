@@ -13,9 +13,11 @@ class LiquidacionDetalle:
         total: Decimal,
         id: int | None = None,
         liquidacion_id: int | None = None,
+        legajo_novedad_id: int | None = None,
     ):
         self.id = id
         self.liquidacion_id = liquidacion_id
+        self.legajo_novedad_id = legajo_novedad_id
         self.concepto_id = concepto_id
         self.cantidad = cantidad
         self.valor = valor

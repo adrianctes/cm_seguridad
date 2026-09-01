@@ -14,7 +14,7 @@ class LiquidacionService:
         self.repo = repo
 
     def crear(self, data):
-
+        
 
         existente = self.repo.buscar_por_legajo_y_datos_fijos(
             data.legajo_id,
@@ -64,7 +64,10 @@ class LiquidacionService:
                 haber=linea.haber,
                 retencion=linea.retencion,
                 total=linea.total,
+                legajo_novedad_id = linea.legajo_novedad_id
             )
+
+           
 
             liquidacion.lineas_liquidacion.append(detalle)
 

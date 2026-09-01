@@ -28,6 +28,9 @@ from typing import List
 
 from infrastructura.pdf.liquidacion_impresion import LiquidacionImpresion
 
+import secrets
+import time
+
 router = APIRouter(prefix="/liquidaciones")
 
 @router.get(
@@ -70,8 +73,10 @@ def crear_liquidacion(
 ):
     service = LiquidacionService(repo)
     try:
+      print(data)
       return service.crear(data)
     except Exception as ex:
+        print(ex)
         raise HTTPException(
             status_code=400,
             detail=str(ex)
@@ -191,18 +196,23 @@ async def liquidar(
 ):
 
     service = ProcesoLiquidacionService(
-        repo_datos_fijos,
-        repo_legajo,
-        repo_legajo_concepto,
-        repo_concepto,
-        repo_novedad,
-        repo_liquidacion
-    )
-
-    return service.liquidar(
-        request.datos_fijos_id,
-        request.legajo_id
-    )
+            repo_datos_fijos,
+            repo_legajo,
+            repo_legajo_concepto,
+            repo_concepto,
+            repo_novedad,
+            repo_liquidacion
+        )
+    try: 
+        return service.liquidar(
+            request.datos_fijos_id,
+            request.legajo_id
+        )
+    except Exception as ex:
+            raise HTTPException(
+                status_code=400,
+                detail=str(ex)
+            )
 
 @router.get("/{liquidacion_id}/pdf")
 def imprimir_liquidacion(
@@ -274,8 +284,7 @@ def imprimir_liquidacion(
             status_code=500,
             detail=str(ex)
         )
-import secrets
-import time
+
 tokens_pdf = {}
 @router.get("/{liquidacion_id}/pdf-token")
 def generar_token_pdf(

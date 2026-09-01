@@ -38,6 +38,8 @@ class LiquidacionBase(BaseModel):
 
 class LiquidacionDetalleDto(BaseModel):
 
+    legajo_novedad_id: int | None = Field(default=None, gt=0)
+
     concepto_id: int = Field(..., gt=0)
 
     cantidad: Decimal
@@ -105,6 +107,8 @@ class LiquidacionDetalleResponse(BaseModel):
     tipo_calculo: str
 
     formula: Optional[str] = None
+
+    novedad_id : Optional[int] = None
 
     es_novedad: bool
 

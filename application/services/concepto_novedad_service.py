@@ -34,6 +34,7 @@ class NovedadService:
                                   busqueda: str | None = None ):
         
         novedades = self.repo.obtener_por_periodo(fecha, tipo_busqueda, busqueda)
+        #print(novedades)
 
         if not novedades:
             raise HTTPException(status_code=404, detail="No encontrado")

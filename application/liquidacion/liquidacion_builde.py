@@ -30,7 +30,7 @@ class LiquidacionBuilder:
 
                     tipo_calculo=concepto.tipo_calculo,
                     formula=concepto.formula,
-
+                    
                     es_novedad=False,
                     orden=concepto.orden
                 )
@@ -38,7 +38,7 @@ class LiquidacionBuilder:
 
         # Novedades del período
         for nov in novedades:
-
+        
             concepto = nov.concepto
 
             clasificacion = concepto.clasificacion_concepto
@@ -54,7 +54,7 @@ class LiquidacionBuilder:
                     clasificacion_codigo=clasificacion.codigo,
                     clasificacion_nombre=clasificacion.nombre,
                     clasificacion_tipo=clasificacion.tipo,
-
+                  
                     cantidad=nov.cantidad,
                     valor=nov.valor,
 
@@ -62,8 +62,9 @@ class LiquidacionBuilder:
                     formula=concepto.formula,
 
                     es_novedad=True,
-                    orden=concepto.orden
+                    orden=concepto.orden,
+                    novedad_id = nov.id,
                 )
             )
-
+        
         return sorted(items, key=lambda x: x.orden)

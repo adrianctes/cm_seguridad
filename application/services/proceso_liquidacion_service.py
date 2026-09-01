@@ -44,6 +44,7 @@ class ProcesoLiquidacionService:
         # 1 - Obtener Datos Fijos
         datos_fijos = self.repo_datos_fijos.obtener(datos_fijos_id)
 
+      
 
         if not datos_fijos:
             raise Exception("No existen los datos fijos.")
@@ -77,20 +78,12 @@ class ProcesoLiquidacionService:
             legajo_conceptos,
             novedades
         )
-
+       
                    
         self.motor.calcular(items, ANIOS_ANTIGUEDAD)
         return self.resultado_builder.construir(
             items
         )
-        for item in items:
-                    print(
-                        json.dumps(
-                            asdict(item),
-                            indent=4,
-                            ensure_ascii=False,
-                            default=str
-                        )
-                    )
+        
             
    

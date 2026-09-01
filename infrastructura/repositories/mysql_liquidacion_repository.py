@@ -28,11 +28,13 @@ class MySQLLiquidacionRepository(LiquidacionRepository):
 
             detalle_model = LiquidacionDetalleModel(
                 concepto_id=linea.concepto_id,
+                legajo_novedad_id = linea.legajo_novedad_id,
                 cantidad=linea.cantidad,
                 valor=linea.valor,
                 haber=linea.haber,
                 retencion=linea.retencion,
                 total=linea.total
+
             )
 
             model.lineas_liquidacion.append(detalle_model)
