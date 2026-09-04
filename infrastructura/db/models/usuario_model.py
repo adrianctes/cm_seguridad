@@ -10,6 +10,9 @@ class UsuarioModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
+    nombre =  Column(String(45), nullable=False)
+    apellido =  Column(String(45), nullable=False)
+    rol =  Column(String(45), nullable=False)
     activo = Column(Boolean, default=True)
     created_at = Column(
         TIMESTAMP,

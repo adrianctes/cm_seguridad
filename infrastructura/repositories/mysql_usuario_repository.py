@@ -19,6 +19,8 @@ class MySQLUsuarioRepository(UsuarioRepository):
 
         model.username = usuario.username
         model.password_hash = usuario.password_hash
+        model.nombre = usuario.nombre,
+        model.apellido= usuario.apellido
         model.activo = usuario.activo
 
         self.db.add(model)
@@ -77,6 +79,9 @@ class MySQLUsuarioRepository(UsuarioRepository):
             id=model.id,
             username=model.username,
             password_hash=model.password_hash,
+            nombre= model.nombre,
+            apellido = model.apellido,
+            rol =model.rol,
             activo=model.activo,
             created_at=model.created_at
         )

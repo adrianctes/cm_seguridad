@@ -4,6 +4,7 @@ from urllib import request
 
 from fastapi import Depends
 from infrastructura.db.session import get_db
+from infrastructura.repositories.mysql_auditoria_repositorio import MySqlAuditoriaRepository
 from infrastructura.repositories.mysql_datos_fijos_liquidacion_repositorio import MySQLDatosFijosLiquidacionRepository
 from infrastructura.repositories.mysql_novedad_repository import MySQLNovedadRepository
 from infrastructura.repositories.mysql_concepto_repository import MySQLConceptoRepository
@@ -59,6 +60,9 @@ def get_usuario_repository(db = Depends(get_db)):
 
 def get_clasificacion_concepto_repository(db = Depends(get_db)):
     return MySQLClasificacionConceptoRepository(db)
+
+def get_auditoria_repository(db = Depends(get_db)):
+    return MySqlAuditoriaRepository(db)
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/api/v1/auth/login"
