@@ -32,9 +32,9 @@ api_router.include_router(modalidad.router)
 api_router.include_router(historia_laboral.router)
 api_router.include_router(clasificacion_concepto.router)'''
 
-from api.v1.endpoints.gestion_haberes import liquidacion
+from api.v1.entrypoints.gestion_haberes import liquidacion
 from fastapi import APIRouter, Depends
-from api.v1.endpoints import (
+from api.v1.entrypoints import (
     auth,
     bancos,
     categorias,
@@ -45,9 +45,9 @@ from api.v1.endpoints import (
     novedad,
     usuario,
 )
-from api.v1.endpoints.gestion_haberes import datos_fijos_liquidacion
+from api.v1.entrypoints.gestion_haberes import datos_fijos_liquidacion
 
-from api.v1.endpoints.legajos import (
+from api.v1.entrypoints.legajos import (
     legajo,
     legajo_concepto,
     legajo_novedad

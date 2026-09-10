@@ -18,6 +18,7 @@ class AuthService:
         usuario = self.repo.obtener_por_username(
             data.username
         )
+        
    
         if not usuario:
             raise Exception("Usuario inválido")

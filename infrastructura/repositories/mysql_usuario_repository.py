@@ -1,5 +1,7 @@
 # infrastructura/repositories/mysql_usuario_repository.py
 
+from sqlalchemy import or_, select, update
+
 from domain.entities.usuario_entity import Usuario
 from domain.repositories.usuario_repositorio_interface import UsuarioRepository
 from infrastructura.db.models.usuario_model import UsuarioModel
@@ -22,6 +24,7 @@ class MySQLUsuarioRepository(UsuarioRepository):
         model.nombre = usuario.nombre,
         model.apellido= usuario.apellido
         model.activo = usuario.activo
+        model.rol =usuario.rol
 
         self.db.add(model)
         self.db.commit()
@@ -31,16 +34,19 @@ class MySQLUsuarioRepository(UsuarioRepository):
 
     def obtener_por_id(self, usuario_id: int):
 
-        model = (
-            self.db.query(UsuarioModel)
-            .filter(UsuarioModel.id == usuario_id)
-            .first()
+        stmt = (
+        select(UsuarioModel)
+        .where(UsuarioModel.id == usuario_id)
         )
 
-        if not model:
+        result =  self.db.execute(stmt)
+
+        model = result.scalar_one_or_none()
+
+        if model is None:
             return None
 
-        return self._to_entity(model)
+        return  self._to_entity(model)
 
     def obtener_por_username(self, username: str):
 
@@ -55,11 +61,50 @@ class MySQLUsuarioRepository(UsuarioRepository):
 
         return self._to_entity(model)
 
-    def listar(self):
+    def listar(
+        self,
+        busqueda: str | None = None,
+        activo: bool | None = None,
+    ):
+        stmt = select(UsuarioModel)
 
-        models = self.db.query(UsuarioModel).all()
+        if busqueda:
+            texto = f"%{busqueda}%"
 
-        return [self._to_entity(model) for model in models]
+            stmt = stmt.where(
+                or_(
+                    UsuarioModel.username.like(texto),
+                    UsuarioModel.nombre.like(texto),
+                    UsuarioModel.apellido.like(texto),
+                )
+            )
+
+        if activo is not None:
+            stmt = stmt.where(
+                UsuarioModel.activo == activo
+            )
+
+        result =  self.db.execute(stmt)
+
+        models = result.scalars().all()
+
+        return [
+            self._to_entity(model)
+            for model in models
+        ]
+
+    def cambiar_estado(
+    self,
+    usuario: Usuario
+    ):
+        stmt = (
+            update(UsuarioModel)
+            .where(UsuarioModel.id == usuario.id)
+            .values(activo=usuario.activo)
+        )
+
+        self.db.execute(stmt)
+        self.db.commit()
 
     def eliminar(self, usuario_id: int):
 
@@ -85,3 +130,19 @@ class MySQLUsuarioRepository(UsuarioRepository):
             activo=model.activo,
             created_at=model.created_at
         )
+
+
+    def cambiar_password(
+        self,
+        usuario_id: int,
+        password_hash: str,
+    ) -> None:
+
+        stmt = (
+            update(UsuarioModel)
+            .where(UsuarioModel.id == usuario_id)
+            .values(password_hash=password_hash)
+        )
+
+        self.db.execute(stmt)
+        self.db.commit()

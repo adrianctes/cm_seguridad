@@ -3,6 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from application.dtos.dto_usuario import (
+    CambiarPasswordDTO,
     UsuarioCreate,
     UsuarioUpdate,
     UsuarioResponse
@@ -19,13 +20,12 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=UsuarioResponse)
+@router.post("", response_model=UsuarioResponse)
 def crear(
     data: UsuarioCreate,
     repo=Depends(get_usuario_repository)
 ):
     service = UsuarioService(repo)
-
     try:
         return service.crear(data)
 
@@ -35,22 +35,25 @@ def crear(
             detail=str(ex)
         )
 
-
-@router.get("/", response_model=list[UsuarioResponse])
+@router.get("", response_model=list[UsuarioResponse])
 def listar(
-    repo=Depends(get_usuario_repository)
+    busqueda: str | None = None,
+    activo: bool | None = None,
+    repo=Depends(get_usuario_repository),
 ):
+
+
     service = UsuarioService(repo)
 
     try:
-        return service.listar()
+        return service.listar( busqueda=busqueda,
+                               activo=activo,)
 
     except Exception as ex:
         raise HTTPException(
             status_code=422,
             detail=str(ex)
         )
-
 
 @router.get("/{usuario_id}", response_model=UsuarioResponse)
 def obtener_por_id(
@@ -78,7 +81,6 @@ def obtener_por_id(
             status_code=422,
             detail=str(ex)
         )
-
 
 @router.put("/{usuario_id}", response_model=UsuarioResponse)
 def actualizar(
@@ -108,6 +110,55 @@ def actualizar(
             detail=str(ex)
         )
 
+@router.patch("/{usuario_id}/estado",  status_code=200)
+async def cambiar_estado_usuario(
+    usuario_id: int,
+    activo: bool,
+    repo=Depends(get_usuario_repository)
+):
+
+        try:
+            service = UsuarioService(repo)
+            service.cambiar_estado(usuario_id, activo)
+    
+        except Exception as ex:
+            raise HTTPException(
+                status_code=422,
+                detail=str(ex)
+            )  
+
+@router.patch("/{usuario_id}/password", status_code=200)
+async def cambiar_password(
+    usuario_id: int,
+    datos: CambiarPasswordDTO,
+    repo=Depends(get_usuario_repository)
+):
+    try:
+        service = UsuarioService(repo)
+        print("usuarios_id", usuario_id)
+        print("password_nueva", datos.password_nueva)
+        print("password_confirmacion" , datos.password_confirmacion)
+   
+        service.cambiar_password(
+            usuario_id=usuario_id,
+            password_actual=datos.password_actual,
+            password_nueva=datos.password_nueva,
+            password_confirmacion = datos.password_confirmacion
+        )
+
+        return {
+            "ok": True,
+            "mensaje": "Contraseña actualizada correctamente"
+        }
+    except HTTPException:
+        raise
+
+    except Exception as ex:
+        print(f"ERROR CAMBIANDO PASSWORD: {ex}")
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )
 
 @router.delete("/{usuario_id}")
 def eliminar(

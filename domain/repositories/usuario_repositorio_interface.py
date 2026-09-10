@@ -11,7 +11,7 @@ class UsuarioRepository(ABC):
         pass
 
     @abstractmethod
-    def obtener_por_id(self, usuario_id: int):
+    async def obtener_por_id(self, usuario_id: int):
         pass
 
     @abstractmethod
@@ -19,7 +19,17 @@ class UsuarioRepository(ABC):
         pass
 
     @abstractmethod
-    def listar(self):
+    def cambiar_estado(self,  usuario: Usuario):
+        pass
+
+    @abstractmethod
+    async def cambiar_password(self,  usuario_id:int, password_hash: str):
+        pass
+
+    @abstractmethod
+    def listar(self,  
+               busqueda: str | None = None,
+               activo: bool | None = None):
         pass
 
     @abstractmethod
