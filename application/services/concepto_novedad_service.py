@@ -29,16 +29,18 @@ class NovedadService:
             raise HTTPException(status_code=404, detail="No encontrado")
         return novedad
     
-    def obtener_por_periodo(self, fecha: date,
-                                  tipo_busqueda: str | None = None,
-                                  busqueda: str | None = None ):
-        
-        novedades = self.repo.obtener_por_periodo(fecha, tipo_busqueda, busqueda)
-        #print(novedades)
+    def obtener_por_periodo(
+            self,
+            fecha: date,
+            tipo_busqueda: str | None = None,
+            busqueda: str | None = None
+        ):
 
-        if not novedades:
-            raise HTTPException(status_code=404, detail="No encontrado")
-        return novedades
+            return self.repo.obtener_por_periodo(
+                fecha,
+                tipo_busqueda,
+                busqueda
+            )
 
     def listar_por_legajo(self, legajo_id: int):
         return self.repo.listar_por_legajo(legajo_id)

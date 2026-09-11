@@ -174,6 +174,28 @@ class UsuarioService:
                     password_hash=nuevo_hash,
                 )
 
+    def resetear_password(
+        self,
+        usuario_id: int,
+        password: str,
+    ) -> None:
+
+        usuario = self.repo.obtener_por_id(
+            usuario_id
+        )
+
+        if usuario is None:
+            raise Exception(
+                "Usuario no encontrado"
+            )
+
+        nuevo_hash = hash_password(password)
+
+        self.repo.cambiar_password(
+            usuario_id=usuario_id,
+            password_hash=nuevo_hash,
+        )
+    
    # 🔹 Eliminar
     def eliminar(self, usuario_id: int):
 

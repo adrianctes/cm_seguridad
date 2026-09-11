@@ -42,3 +42,6 @@ class CambiarPasswordDTO(BaseModel):
     password_actual: str
     password_nueva: str
     password_confirmacion : str
+
+class ResetPasswordDTO(BaseModel):
+    password: str

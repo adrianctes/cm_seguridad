@@ -46,18 +46,34 @@ def obtener_por_periodo(
     fecha: date,
     tipo_busqueda: str | None = None,
     busqueda: str | None = None,
-    repo = Depends(get_novedad_repository)
+    repo=Depends(get_novedad_repository)
 ):
     service = NovedadService(repo)
+
     try:
-             
-        return service.obtener_por_periodo(fecha, tipo_busqueda, busqueda)
+        print("===================================")
+        print("FECHA:", fecha)
+        print("TIPO:", tipo_busqueda)
+        print("BUSQUEDA:", busqueda)
+        print("===================================")
+
+        return service.obtener_por_periodo(
+            fecha,
+            tipo_busqueda,
+            busqueda
+        )
+
+    except HTTPException:
+        raise
+
     except Exception as ex:
-        print(ex.args)
+        import traceback
+        traceback.print_exc()
+
         raise HTTPException(
-            status_code=400,
+            status_code=500,
             detail=str(ex)
-        )    
+        )
 
 # 🔹 Listar por legajo
 @router.get("/legajos/{legajo_id}", response_model=List[NovedadResponse])

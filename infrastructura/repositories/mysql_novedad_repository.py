@@ -95,8 +95,11 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
         )
 
         filtros = [
-            NovedadModel.fecha_desde >= fecha_inicio,
-            NovedadModel.fecha_desde < fecha_fin
+            NovedadModel.fecha_desde < fecha_fin,
+            or_(
+                NovedadModel.fecha_hasta.is_(None),
+                NovedadModel.fecha_hasta >= fecha_inicio
+            )
         ]
 
         if busqueda:
@@ -127,7 +130,7 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
         stmt = stmt.where(and_(*filtros))
 
         rows = self.db.execute(stmt).mappings().all()
-        print(rows)
+   
         return rows
     # 🔹 Listar por legajo
     def listar_por_legajo(self, legajo_id: int):

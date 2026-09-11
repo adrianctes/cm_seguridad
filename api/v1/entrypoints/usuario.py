@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from application.dtos.dto_usuario import (
     CambiarPasswordDTO,
+    ResetPasswordDTO,
     UsuarioCreate,
     UsuarioUpdate,
     UsuarioResponse
@@ -155,6 +156,35 @@ async def cambiar_password(
 
     except Exception as ex:
         print(f"ERROR CAMBIANDO PASSWORD: {ex}")
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )
+
+@router.patch("/{usuario_id}/password/reset")
+def resetear_password(
+    usuario_id: int,
+    datos: ResetPasswordDTO,
+    repo=Depends(get_usuario_repository),
+):
+    try:
+
+        service = UsuarioService(repo)
+
+        service.resetear_password(
+            usuario_id=usuario_id,
+            password=datos.password,
+        )
+
+        return {
+            "ok": True,
+            "mensaje": "Contraseña restablecida correctamente"
+        }
+
+    except Exception as ex:
+
+        print(f"ERROR RESETEANDO PASSWORD: {ex}")
+
         raise HTTPException(
             status_code=500,
             detail=str(ex)

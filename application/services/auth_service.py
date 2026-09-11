@@ -32,7 +32,7 @@ class AuthService:
         )
 
         if not password_ok:
-            raise Exception("Password incorrecta")
+            raise Exception("Usuario o contraseña incorrectos")
 
         token = create_access_token({
             "sub": usuario.username,
