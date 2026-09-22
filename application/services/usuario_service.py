@@ -4,13 +4,13 @@ from core.security import hash_password,verify_password
 
 from domain.entities.usuario_entity import Usuario
 from domain.repositories.usuario_repositorio_interface import (
-    UsuarioRepository
+    IUsuarioRepository
 )
 
 
 class UsuarioService:
 
-    def __init__(self, repo: UsuarioRepository):
+    def __init__(self, repo: IUsuarioRepository):
         self.repo = repo
 
     # 🔹 Crear

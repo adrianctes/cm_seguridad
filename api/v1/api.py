@@ -44,6 +44,8 @@ from api.v1.entrypoints import (
     modalidad,
     novedad,
     usuario,
+    rol_permiso_router,
+    roles
 )
 from api.v1.entrypoints.gestion_haberes import datos_fijos_liquidacion
 
@@ -56,6 +58,11 @@ from core.dependencias import get_current_user
 api_router = APIRouter()
 
 api_router.include_router(auth.router)
+api_router.include_router(roles.router,
+                             dependencies=[Depends(get_current_user)])
+api_router.include_router(rol_permiso_router.router,
+                             dependencies=[Depends(get_current_user)])
+
 api_router.include_router(legajo.router,
                           dependencies=[Depends(get_current_user)])
 api_router.include_router(legajo_concepto.router,

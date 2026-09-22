@@ -3,11 +3,11 @@
 from sqlalchemy import or_, select, update
 
 from domain.entities.usuario_entity import Usuario
-from domain.repositories.usuario_repositorio_interface import UsuarioRepository
+from domain.repositories.usuario_repositorio_interface import IUsuarioRepository
 from infrastructura.db.models.usuario_model import UsuarioModel
 
 
-class MySQLUsuarioRepository(UsuarioRepository):
+class MySQLUsuarioRepository(IUsuarioRepository):
 
     def __init__(self, db):
         self.db = db

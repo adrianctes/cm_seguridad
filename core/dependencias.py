@@ -17,12 +17,16 @@ from infrastructura.repositories.mysql_categoria_repository import MySQLCategori
 from infrastructura.repositories.mysql_modalidad_repository import MySQLModalidadLiquidacionRepository
 from infrastructura.repositories.mysql_banco_repositorio import MySQLBancoRepository
 from infrastructura.repositories.mysql_clasificacion_concepto_repositorio import MySQLClasificacionConceptoRepository
+from infrastructura.repositories.mysql_rol_permiso_repository import MySQLRolPermisoRepository
 from fastapi.security import OAuth2PasswordBearer
 from core.config import settings
 from jose import JWTError, jwt
 from fastapi import Depends
 from fastapi import HTTPException, status
 
+
+def get_rol_permisos_repository(db = Depends(get_db)):
+    return MySQLRolPermisoRepository(db)
 
 def get_historia_laboral_repository(db = Depends(get_db)):
     return MySQLHistoriaLaboralRepository(db)

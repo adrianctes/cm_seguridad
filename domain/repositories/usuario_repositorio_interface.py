@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from domain.entities.usuario_entity import Usuario
 
 
-class UsuarioRepository(ABC):
+class IUsuarioRepository(ABC):
 
     @abstractmethod
     def guardar(self, usuario: Usuario):

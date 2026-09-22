@@ -13,7 +13,9 @@ class UsuarioLoginResponse(BaseModel):
     nombre: str
     apellido: str
     rol: str
-    
+    permisos: list[str] = []    
+
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"

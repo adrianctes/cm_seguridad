@@ -9,7 +9,7 @@ from application.dtos.dto_legajo import (
     LegajoResponse
 )
 from application.services.legajo_service import LegajoService
-from core.dependencias import get_datos_fijos_liquidacion_repository, get_legajo_repository
+from core.dependencias import  get_legajo_repository
 
 router = APIRouter(
     prefix="/legajos",
