@@ -227,5 +227,5 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
             valor=model.valor,
             cantidad = model.cantidad,
             activo = model.activo,
-            concepto = model.concepto
+            concepto=model.concepto.nombre if model.concepto else None
         )
