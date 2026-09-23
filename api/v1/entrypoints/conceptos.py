@@ -22,10 +22,19 @@ def crear(data: ConceptoCreate,
         )
    
 @router.get("", response_model=list[ConceptoResponse])
-def listar( repo = Depends(get_concepto_repository)):
+def listar( 
+    activo: bool| None = None,
+    busqueda: str | None = None,
+    repo = Depends(get_concepto_repository)):
+    params = {
+                "activo": activo,
+                "busqueda": busqueda
+            }
+   
     service = ConceptoService(repo)
     try:
-      return service.listar()
+      return service.listar(params)
+    
     except Exception as ex:
         raise HTTPException(
             status_code=422,

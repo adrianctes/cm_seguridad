@@ -8,7 +8,7 @@ class IConceptoRepository(ABC):
         pass
 
     @abstractmethod
-    def listar(self):
+    def listar(self, params: dict):
         pass
 
 

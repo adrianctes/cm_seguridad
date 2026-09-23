@@ -20,3 +20,4 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     usuario: UsuarioLoginResponse
+    requiere_cambio_password: bool = False

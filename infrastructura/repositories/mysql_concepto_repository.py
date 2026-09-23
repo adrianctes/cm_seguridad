@@ -29,9 +29,29 @@ class MySQLConceptoRepository:
             error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]
             raise Exception(error_msg)
 
-    def listar(self):
-        return self.db.query(ConceptoModel).all()
-    
+    def listar(self, params: dict):
+
+        query = self.db.query(ConceptoModel)
+
+        activo = params.get("activo")
+        busqueda = params.get("busqueda")
+
+        # FILTRO POR ACTIVO
+        if activo is not None:
+            query = query.filter(
+                ConceptoModel.activo == activo
+            )
+
+        # BÚSQUEDA POR CÓDIGO O NOMBRE
+        if busqueda:
+            busqueda = busqueda.strip()
+
+            query = query.filter(
+                (ConceptoModel.codigo.ilike(f"%{busqueda}%")) |
+                (ConceptoModel.nombre.ilike(f"%{busqueda}%"))
+            )
+
+        return query.all()
     
     def obtener(self, id: int):
         return self.db.query(ConceptoModel).filter_by(id=id).first()

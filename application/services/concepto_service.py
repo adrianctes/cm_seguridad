@@ -23,8 +23,8 @@ class ConceptoService:
         return self.repo.crear(concepto)
 
     # 🔹 Listar
-    def listar(self):
-        return self.repo.listar()
+    def listar(self, params: dict):
+        return self.repo.listar(params)
  
     # 🔹 Obtener por ID
     def obtener(self, id: int):

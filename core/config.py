@@ -1,22 +1,42 @@
 # app/core/config.py
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
 
-    # 🔹 Base de datos
-    DATABASE_URL: str = (
-        "mysql+pymysql://root:advenir2069@localhost:3306/cm_seguridad"
-    )
+    # =====================================================
+    # BASE DE DATOS
+    # =====================================================
 
-    # 🔹 JWT
-    SECRET_KEY: str = "MI_SECRET_KEY_SUPER_SEGURA"
+    DATABASE_URL: str
+
+
+    # =====================================================
+    # JWT
+    # =====================================================
+
+    SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
-    class Config:
-        env_file = ".env"
+
+    # =====================================================
+    # PASSWORD TEMPORAL
+    # =====================================================
+
+    NEW_RESET_PASSWORD: str
+
+
+    # =====================================================
+    # CONFIGURACIÓN
+    # =====================================================
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore"
+    )
 
 
 settings = Settings()
