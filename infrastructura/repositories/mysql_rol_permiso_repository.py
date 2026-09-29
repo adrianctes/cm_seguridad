@@ -1,10 +1,7 @@
 from sqlalchemy import select, delete
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from infrastructura.db.models.permiso_model import PermisoModel
 from infrastructura.db.models.rol_permiso_model import RolPermisoModel
 from application.dtos.dto_rol_permisos import RolPermisoCreate
-from domain.entities.usuario_entity import Usuario
 from domain.repositories.rol_permisos_repositorio_interface import IRolPermisosRepository
 
 
