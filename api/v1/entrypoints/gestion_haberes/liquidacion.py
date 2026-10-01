@@ -25,9 +25,8 @@ from core.dependencias import (
 from application.services.proceso_liquidacion_service import ProcesoLiquidacionService
 from application.services.liquidacion_service import LiquidacionService
 from typing import List
-
 from infrastructura.pdf.liquidacion_impresion import LiquidacionImpresion
-
+from core.config import settings
 import secrets
 import time
 
@@ -301,7 +300,7 @@ def generar_token_pdf(
 
     return {
         "url": (
-            f"/api/v1/liquidaciones/"
+            f"{  settings.URL_PUBLICA}/api/v1/liquidaciones/"
             f"pdf-temporal/{token}"
         )
     }

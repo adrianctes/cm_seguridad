@@ -9,7 +9,7 @@ class LiquidacionBuilder:
 
         # Conceptos fijos del legajo
         for lc in legajo_conceptos:
-
+           
             concepto = lc.concepto
             clasificacion = concepto.clasificacion_concepto
 
