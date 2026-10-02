@@ -38,9 +38,9 @@ class LiquidacionBuilder:
 
         # Novedades del período
         for nov in novedades:
-        
+            
             concepto = nov.concepto
-
+        
             clasificacion = concepto.clasificacion_concepto
 
             items.append(
@@ -67,4 +67,4 @@ class LiquidacionBuilder:
                 )
             )
         
-        return sorted(items, key=lambda x: x.orden)
+        return items

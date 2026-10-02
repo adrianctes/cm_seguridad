@@ -4,14 +4,17 @@ class CalculadorFijo:
         self,
         item,
         detalle,
-        ANIOS_ATIGUEDAD
+        anios_antiguedad
     ):
 
         valor = item.valor * item.cantidad
-        if item.clasificacion_tipo == 'C':
+
+        if item.clasificacion_tipo == "C":
             item.haber = valor
-        elif  item.clasificacion_tipo == 'D':
-               item.retencion = valor
 
+        elif item.clasificacion_tipo == "D":
+            item.retencion = valor
 
-        item.total =valor
+        item.total = valor
+
+        return True

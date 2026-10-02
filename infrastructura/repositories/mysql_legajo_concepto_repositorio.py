@@ -79,6 +79,36 @@ class MySQLLegajoConceptoRepository(
 
         return query.all()
 
+    def listar_activos(
+            self,
+            legajo_id=None
+        ):
+    
+            query = (
+                self.db.query(
+                    LegajoConceptoModel
+                )
+               .options(
+            joinedload(LegajoConceptoModel.concepto)
+            .joinedload(ConceptoModel.clasificacion_concepto)
+        )
+            )
+    
+            if legajo_id:
+    
+                query = query.filter(
+                    LegajoConceptoModel.legajo_id
+                    == legajo_id
+                )
+
+                query = query.filter(
+                        LegajoConceptoModel.activo
+                        == True
+                        )
+    
+            return query.all()
+    
+
     def actualizar(
         self,
         id,

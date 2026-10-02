@@ -35,7 +35,7 @@ class NovedadResponse(BaseModel):
     activo: Optional[bool] = None
     concepto_id : int
     codigo_concepto:Optional[str] = None
-    concepto : Optional[str] = None
+    #concepto : Optional[str] = None
     apellido : Optional[str] = None
     nombre : Optional[str] = None
     liquidacion_detalle_id : Optional[int] = None

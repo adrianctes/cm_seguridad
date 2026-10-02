@@ -1,9 +1,5 @@
 from datetime import date
-from decimal import Decimal
-import json
-
 from dataclasses import asdict
-
 from application.liquidacion.liquidacion_builde import LiquidacionBuilder
 from application.liquidacion.motor_liquidacion import MotorLiquidacion
 from application.liquidacion.calcular_anios_antiguedad import calcular_anios
@@ -41,48 +37,57 @@ class ProcesoLiquidacionService:
         legajo_id: int
     ):
 
-        # 1 - Obtener Datos Fijos
         datos_fijos = self.repo_datos_fijos.obtener(datos_fijos_id)
-
-      
 
         if not datos_fijos:
             raise Exception("No existen los datos fijos.")
 
         if datos_fijos.estado != "ABIERTO":
             raise Exception("La liquidación se encuentra cerrada.")
-
-        # 2 - Obtener Legajo
+        
         legajo = self.repo_legajo.obtener_por_id(legajo_id)
         
-
         if not legajo:
             raise Exception("Legajo inexistente.")
         
         fecha_liquidacion = date.today()
-        fecha_ingreso_actual =  date(2025, 6, 1) #legajo.fecha_ingreso_actual
+        fecha_ingreso_actual =  date(2025, 6, 1)
         ANIOS_ANTIGUEDAD = calcular_anios(fecha_ingreso_actual, fecha_liquidacion)
    
-        legajo_conceptos = self.repo_legajo_concepto.listar(legajo_id)
-
-       
-        # 4 - Obtener Novedades
+        legajo_conceptos = self.repo_legajo_concepto.listar_activos(legajo_id)
+      
         novedades = self.repo_novedad.listar_por_fechas(
             legajo.id,
             datos_fijos.fecha_desde,
             datos_fijos.fecha_hasta
         )
-
-
+        
         items = self.builder.construir(
             legajo_conceptos,
             novedades
         )
-       
-                   
-        self.motor.calcular(items, ANIOS_ANTIGUEDAD)
+        
+        prioridad = {
+            "FIJO": 1,
+            "PORCENTUAL": 2,
+            "FORMULA": 3,
+        }
+
+        items = sorted(
+            items,
+            key=lambda x: (
+                prioridad.get(x.tipo_calculo, 99),
+                x.orden
+            )
+        )
+
+        items_calculados = self.motor.calcular(
+            items,
+            ANIOS_ANTIGUEDAD
+        )
+
         return self.resultado_builder.construir(
-            items
+            items_calculados
         )
         
             
