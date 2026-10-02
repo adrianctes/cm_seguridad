@@ -37,7 +37,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 class AuthMiddleware(BaseHTTPMiddleware):
 
-    async def dispatch(self, request: Request, call_next):
+     async def dispatch(self, request: Request, call_next):
 
         path = request.url.path
 
@@ -47,6 +47,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             "/docs",
             "/openapi.json",
             "/redoc",
+            "/favicon.ico",
         ]
 
         # 🔓 PDF TEMPORAL

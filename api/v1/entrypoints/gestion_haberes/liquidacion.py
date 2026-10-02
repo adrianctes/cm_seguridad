@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
-import os
 from sqlalchemy.orm import Session
 from application.dtos.dto_legajo import LegajoResponse
 from application.dtos.dto_liquidacion import (
@@ -27,8 +26,10 @@ from application.services.liquidacion_service import LiquidacionService
 from typing import List
 from infrastructura.pdf.liquidacion_impresion import LiquidacionImpresion
 from core.config import settings
+from fastapi import BackgroundTasks
 import secrets
 import time
+import os
 
 router = APIRouter(prefix="/liquidaciones")
 
@@ -234,12 +235,7 @@ def imprimir_liquidacion(
                 detail="No se encontró la liquidación."
             )
 
-        # ---------------------------------------------
-        # Pydantic -> diccionario
-        # ---------------------------------------------
-
         data = data.model_dump()
-
         # ---------------------------------------------
         # Ruta del PDF
         # ---------------------------------------------
@@ -251,7 +247,6 @@ def imprimir_liquidacion(
         # ---------------------------------------------
         # Generar PDF
         # ---------------------------------------------
-
         impresion = LiquidacionImpresion(
             data,
             ruta
@@ -308,6 +303,7 @@ def generar_token_pdf(
 @router.get("/pdf-temporal/{token}")
 def obtener_pdf_temporal(
     token: str,
+    background_tasks: BackgroundTasks,
     repo=Depends(get_liquidacion_repository)
 ):
 
@@ -378,6 +374,13 @@ def obtener_pdf_temporal(
 
     impresion.generar()
 
+    # Eliminar después de enviar el archivo
+    background_tasks.add_task(
+        eliminar_archivo,
+        ruta
+    )
+
+
     # ---------------------------------------------
     # Devolver PDF
     # ---------------------------------------------
@@ -390,3 +393,11 @@ def obtener_pdf_temporal(
             "Content-Disposition": "inline"
         }
     )
+
+def eliminar_archivo(ruta: str):
+        try:
+            if os.path.exists(ruta):
+                os.remove(ruta)
+           
+        except Exception as ex:
+            print(f"No se pudo eliminar el PDF: {ex}")
