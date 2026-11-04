@@ -11,7 +11,7 @@ def crear(data: ConceptoCreate,
     repo = Depends(get_concepto_repository)
 ):
     service = ConceptoService(repo)
-
+    print('data', data)
     try:
       return service.crear(data)
     except Exception as ex:
@@ -21,6 +21,28 @@ def crear(data: ConceptoCreate,
             detail=str(ex)
         )
    
+@router.get("/novedades", response_model=list[ConceptoResponse])
+def novedades( 
+    activo: bool| None = None,
+    busqueda: str | None = None,
+    repo = Depends(get_concepto_repository)):
+    params = {
+                "activo": activo,
+                "busqueda": busqueda
+            }
+   
+   
+    service = ConceptoService(repo)
+    try:
+      return service.listar_novedades(params)
+    
+    except Exception as ex:
+        raise HTTPException(
+            status_code=422,
+            detail=str(ex)
+        )
+
+
 @router.get("", response_model=list[ConceptoResponse])
 def listar( 
     activo: bool| None = None,
@@ -40,8 +62,8 @@ def listar(
             status_code=422,
             detail=str(ex)
         )
-
    
+
 @router.get("/{id}", response_model=ConceptoResponse)
 def obtener(id: int, repo = Depends(get_concepto_repository)):
     service = ConceptoService(repo)
@@ -53,33 +75,9 @@ def obtener(id: int, repo = Depends(get_concepto_repository)):
             detail=str(ex)
         )
   
-@router.get(
-    "/modalidad-pago/{id}",
-    response_model=list[ConceptoResponse]
-)
-def obtener_por_modalidad_pago(
-    id: int,
-    repo=Depends(get_concepto_repository)
-):
-
-    service = ConceptoService(repo)
-
-    try:
-
-        return service.obtener_por_modalidad_pago(
-            id
-        )
-
-    except Exception as ex:
-
-        raise HTTPException(
-            status_code=422,
-            detail=str(ex)
-        )
-
-
 @router.put("/{concepto_id}", response_model=ConceptoResponse)
-def actualizar(concepto_id: int, data: ConceptoUpdate, repo = Depends(get_concepto_repository)):
+def actualizar(concepto_id: int, data: ConceptoUpdate,
+                repo = Depends(get_concepto_repository)):
    
     service = ConceptoService(repo)
 
@@ -93,34 +91,16 @@ def actualizar(concepto_id: int, data: ConceptoUpdate, repo = Depends(get_concep
         )
     
 
-
 @router.delete("/{concepto_id}")
-def eliminar(concepto_id: int, db: Session = Depends(get_concepto_repository)):
-    pass
-    #repo = MySQLConceptoRepository(db)
-    #concepto = repo.eliminar(concepto_id)
+def eliminar(concepto_id: int,
+             repo = Depends(get_concepto_repository)
+            ):
 
-    #if not concepto:
-    #    raise HTTPException(status_code=404, detail="Concepto no encontrado")
-
-    return {"message": "Concepto eliminado"}
-
-@router.get(
-    "/modalidad-pago/{modalidad_pago_id}/novedades",
-    response_model=list[ConceptoResponse]
-)
-def obtener_novedades_por_modalidad_pago(
-    modalidad_pago_id: int,
-    repo=Depends(get_concepto_repository)
-):
-    es_novedad=True
     service = ConceptoService(repo)
-
     try:
-        return service.obtener_por_modalidad_pago(modalidad_pago_id, es_novedad)
-
+        return service.eliminar(concepto_id)
     except Exception as ex:
-        raise HTTPException(
-            status_code=422,
-            detail=str(ex)
-        )
+           raise HTTPException(
+               status_code=422,
+               detail=str(ex)
+           )

@@ -8,24 +8,34 @@ class ConceptoService:
 
     # 🔹 Crear
     def crear(self, data):
+        # Secuencia: máximo existente + 10; si no hay conceptos, comienza en 10
+        secuencia = (self.repo.obtener_secuencia_maxima() or 0) + 10
+        codigo =   (self.repo.obtener_ultimo_codigo()) + 1
         concepto = Concepto(
-            codigo=data.codigo,
+            codigo=codigo,
             nombre=data.nombre,
             clasificacion_concepto_id = data.clasificacion_concepto_id,
             tipo_calculo=data.tipo_calculo,
             formula= data.formula,
             activo=data.activo,
             es_novedad=data.es_novedad,
-            modalidad_pago_id = data.modalidad_pago_id,
-            orden = data.orden
+            orden = data.orden,
+            abreviatura = data.abreviatura,
+            unidad_medida = data.unidad_medida,
+            secuencia = secuencia
         )
-     
+        print(concepto) 
         return self.repo.crear(concepto)
 
     # 🔹 Listar
     def listar(self, params: dict):
         return self.repo.listar(params)
- 
+    
+        # 🔹 Listar novedades
+    def listar_novedades(self, params: dict):
+        return self.repo.listar_novedades(params)
+    
+     
     # 🔹 Obtener por ID
     def obtener(self, id: int):
         concepto = self.repo.obtener(id)
@@ -34,10 +44,6 @@ class ConceptoService:
             raise ValueError("Concepto no encontrado")
         return concepto
     
-    def obtener_por_modalidad_pago(self,modalidad_pago_id: int, es_novedad:bool=False ):
-
-        return self.repo.obtener_por_modalidad_pago(modalidad_pago_id,  es_novedad)
-
     # 🔹 Actualizar (PUT)
     def actualizar(self, concepto_id: int, data):
         concepto = self.repo.actualizar(concepto_id, data)
@@ -47,7 +53,5 @@ class ConceptoService:
 
     # 🔹 Eliminar
     def eliminar(self, concepto_id: int):
-        concepto = self.repo.eliminar(concepto_id)
-        if not concepto:
-            raise ValueError("Concepto no encontrado")
-        return concepto
+        self.repo.eliminar(concepto_id)
+      

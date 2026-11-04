@@ -15,12 +15,6 @@ class MotorLiquidacion:
 
         for item in items:
 
-            print(
-                "PROCESANDO:",
-                item.codigo,
-                item.tipo_calculo
-            )
-
             calculador = self.factory.obtener(item)
 
             resultado = calculador.calcular(
@@ -29,16 +23,11 @@ class MotorLiquidacion:
                 anios_antiguedad
             )
 
-            print(
-                "RESULTADO:",
-                item.codigo,
-                resultado
-            )
-
+           
             if resultado:
                 detalle.append(item)
 
-        print("========== DETALLE FINAL ==========")
+      
 
         for item in detalle:
             print(
@@ -47,6 +36,5 @@ class MotorLiquidacion:
                 item.total
             )
 
-        print("===================================")
 
         return detalle

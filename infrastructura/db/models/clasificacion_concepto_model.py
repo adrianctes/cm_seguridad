@@ -10,6 +10,5 @@ class ClasificacionConceptoModel(Base):
     codigo = Column(String(6), nullable=False)
     nombre = Column(String(60), nullable=False)
     tipo= Column(String(1), nullable=False)
-    orden = Column(Integer, nullable=False)
 
     concepto = relationship("ConceptoModel", back_populates="clasificacion_concepto")

@@ -29,7 +29,7 @@ class MySQLLegajoConceptoRepository(
         model = LegajoConceptoModel(
             legajo_id=entity.legajo_id,
             concepto_id=entity.concepto_id,
-            valor=entity.valor,
+            valor_unidad=entity.valor_unidad,
             cantidad = entity.cantidad,
             activo=entity.activo
         )
@@ -120,7 +120,7 @@ class MySQLLegajoConceptoRepository(
         if not model:
             return None
 
-        model.valor = entity.valor
+        model.valor_unitario = entity.valor_unidad
         model.cantidad = entity.cantidad
         model.activo = entity.activo
 

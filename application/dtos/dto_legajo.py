@@ -20,13 +20,12 @@ class LegajoBase(BaseModel):
     sexo: str
     categoria_id: int
     modalidad_liquidacion_id: int
-    modalidad_pago_id: int
     activo: bool = True
     sac: Optional[bool] = None
     telefono: Optional[str] = None
     banco_id: Optional[int] = None
     cbu: Optional[str] = None
-    valor_modalidad_pago :Optional[Decimal] = None
+ 
 
    
 

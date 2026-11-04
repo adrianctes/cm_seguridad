@@ -6,7 +6,7 @@ from decimal import Decimal
 class ItemLiquidacion:
 
     concepto_id: int
-
+    abreviatura : str
     codigo: str
     concepto: str
 
@@ -24,6 +24,7 @@ class ItemLiquidacion:
     es_novedad: bool
 
     orden: int
+    secuencia: int = 0
     novedad_id: int | None = None
     haber: Decimal = 0
     retencion: Decimal = 0

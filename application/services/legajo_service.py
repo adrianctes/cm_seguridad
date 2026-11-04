@@ -26,9 +26,7 @@ class LegajoService:
             categoria =  None,
             modalidad_liquidacion_id=data.modalidad_liquidacion_id,
             modalidad_liquidacion= None,
-            banco_id= data.banco_id,
-            modalidad_pago_id = data.modalidad_pago_id,
-            valor_modalidad_pago = data.valor_modalidad_pago
+            banco_id= data.banco_id
         )
       
         return  self.legajo_repo.guardar(legajo)

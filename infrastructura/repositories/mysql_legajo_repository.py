@@ -127,10 +127,7 @@ class MySQLLegajoRepository(ILegajoRepository):
         model.modalidad_liquidacion_id = legajo.modalidad_liquidacion_id
         model.banco_id = legajo.banco_id
         model.cbu = legajo.cbu
-        model.modalidad_pago_id = legajo.modalidad_pago_id
-        model.valor_modalidad_pago = legajo.valor_modalidad_pago
-       # model.categoria =legajo.categoria
-        #model.modalidad_liquidacion =legajo.modalidad_liquidacion
+       
        
     
         try:
@@ -195,9 +192,7 @@ class MySQLLegajoRepository(ILegajoRepository):
                 banco = m.banco,
                 banco_id = m.banco_id,
                 cbu = m.cbu,
-                fecha_ingreso_actual = m.fecha_ingreso_actual,
-                modalidad_pago_id = m.modalidad_pago_id,
-                valor_modalidad_pago = m.valor_modalidad_pago
+                fecha_ingreso_actual = m.fecha_ingreso_actual
             )
     
     def actualizar_fecha_ingreso_actual(

@@ -31,10 +31,11 @@ class LegajoConceptoModel(Base):
     )
 
 
-    valor = Column(
-        Numeric(12, 2),
-        nullable=False,
-        default=0
+    # La columna real en BD se llama "valor_unitario" (decimal(10,2), NULL); el contrato de la API es "valor_unidad"
+    valor_unidad = Column(
+        "valor_unitario",
+        Numeric(10, 2),
+        nullable=True
     )
     
     cantidad = Column(

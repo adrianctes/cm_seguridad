@@ -76,7 +76,8 @@ class ProcesoLiquidacionService:
         items = sorted(
             items,
             key=lambda x: (
-                prioridad.get(x.tipo_calculo, 99),
+               # prioridad.get(x.tipo_calculo, 99),
+                x.secuencia,
                 x.orden
             )
         )

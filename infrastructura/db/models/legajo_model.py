@@ -25,8 +25,7 @@ class LegajoModel(Base):
     banco_id =  Column(Integer, ForeignKey("banco.id"), nullable=False)
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
     modalidad_liquidacion_id = Column(Integer, ForeignKey("modalidad_liquidacion.id"), nullable=False)
-    modalidad_pago_id = Column(Integer,  nullable=False)
-    valor_modalidad_pago = Column(Numeric(10, 2), nullable=False)
+
 
     # 🔹 Relaciones (opcional pero recomendado)
     categoria = relationship("CategoriaModel", back_populates="legajos")

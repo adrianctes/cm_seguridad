@@ -5,7 +5,6 @@ class ClasificacionResponse(BaseModel):
     codigo: str
     nombre: str
     tipo :str
-    orden: int
 
     class Config:
         from_attributes = True

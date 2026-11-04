@@ -36,7 +36,7 @@ def crear_concepto_legajo( legajo_id: int,
     data: LegajoConceptoCreate,                      
     repo = Depends(get_legajo_concepto_repository)):
     try:
-      
+        print(data)
         service = LegajoConceptoService(repo)
         return service.crear(legajo_id,data)
         
@@ -48,8 +48,8 @@ def crear_concepto_legajo( legajo_id: int,
         )
 
 
-@router.put("/{legajo_id}/conceptos/{concepto_legajo_id}")
-def actualizar_concepto_legajo(legajo_id: int,
+@router.put("/conceptos/{concepto_legajo_id}")
+def actualizar_concepto_legajo(
     concepto_legajo_id : int,                           
     data: LegajoConceptoUpdate,                      
     repo = Depends(get_legajo_concepto_repository)):

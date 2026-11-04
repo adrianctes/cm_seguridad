@@ -4,7 +4,7 @@ class Concepto:
      
     def __init__(
         self,
-        codigo: str,
+        codigo: int,
         nombre: str,
         clasificacion_concepto_id :int,
         tipo_calculo: str,
@@ -12,15 +12,19 @@ class Concepto:
         activo: bool = True,
         es_novedad: Optional[bool] = None,
         orden:  Optional[int]= None,
-        modalidad_pago_id :  Optional[int]= None,
+        abreviatura :  Optional[str]= None,
+        secuencia :  Optional[int]= None,
+        unidad_medida: Optional[str] = None,
         id: Optional[int]= None
     ):
         self.id = id
         self.codigo = codigo
         self.nombre = nombre
         self.orden = orden
+        self.abreviatura = abreviatura
+        self.secuencia = secuencia
+        self.unidad_medida = unidad_medida
         self.clasificacion_concepto_id = clasificacion_concepto_id
-        self.modalidad_pago_id = modalidad_pago_id
         self.tipo_calculo = tipo_calculo
         self.formula = formula
         self.activo = activo

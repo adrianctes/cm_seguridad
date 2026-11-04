@@ -1,27 +1,32 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Literal, Optional
 
 class ConceptoBase(BaseModel):
-    codigo: str = Field(..., max_length=6)
     nombre: str = Field(..., max_length=100)
     clasificacion_concepto_id : int
-    tipo_calculo: str
-    formula: Optional[str] = None
+    tipo_calculo: str = Field(..., max_length=10)
+    formula: Optional[str] = Field(None, max_length=100)
     activo: Optional[bool] = None
     es_novedad: Optional[bool] = None
-    modalidad_pago_id :Optional[int] = None
     orden : Optional[int] = None
+    abreviatura: str = Field(..., max_length=10)
+    unidad_medida: Literal["DIA", "HORA", "IMPORTE"] = Field(...)
 
-  
+
 
 class ConceptoCreate(ConceptoBase):
-    pass
+      pass
+   
 
 class ConceptoUpdate(ConceptoBase):
-      pass
+    codigo: int = Field(...)
+    secuencia: int = Field(...)
+    
 
 class ConceptoResponse(ConceptoBase):
     id: int
+    codigo: int = Field(...)
+    secuencia: int = Field(...)
 
     class Config:
         from_attributes = True

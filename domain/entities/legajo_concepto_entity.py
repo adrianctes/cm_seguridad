@@ -7,17 +7,17 @@ class LegajoConcepto:
 
     def __init__(
         self,
-        legajo_id: int,
-        concepto_id: int,
-        valor: Decimal,
+        valor_unidad: Decimal,
         cantidad : Decimal,
         activo: bool = True,
+        legajo_id:  Optional[int] = None,
+        concepto_id: Optional[int] = None,
         id: Optional[int] = None
     ):
 
         self.id = id
         self.legajo_id = legajo_id
         self.concepto_id = concepto_id
-        self.valor = valor
+        self.valor_unidad = valor_unidad
         self.cantidad = cantidad
         self.activo = activo

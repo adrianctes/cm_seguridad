@@ -26,11 +26,11 @@ class LegajoConceptoService:
         entity = LegajoConcepto(
             legajo_id=legajo_id,
             concepto_id=data.concepto_id,
-            valor=data.valor,
+            valor_unidad=data.valor_unidad,
             cantidad= data.cantidad,
             activo=data.activo
         )
-
+        print(entity)
         return self.repo.crear(entity)
 
     # =========================
@@ -80,13 +80,13 @@ class LegajoConceptoService:
 
         entity = LegajoConcepto(
             id=id,
-            legajo_id=actual.legajo_id,
-            concepto_id= data.concepto_id,
-            valor= data.valor,
-            cantidad = data.cantidad,
-            activo= data.activo
+            #legajo_id=actual.legajo_id,
+            #concepto_id= data.concepto_id if data.concepto_id is not None else actual.concepto_id,
+            valor_unidad= data.valor_unidad if data.valor_unidad is not None else actual.valor_unidad,
+            cantidad = data.cantidad if data.cantidad is not None else actual.cantidad,
+            activo= data.activo if data.activo is not None else actual.activo
         )
-
+        print(entity.valor_unidad)
         return self.repo.actualizar(
             id,
             entity

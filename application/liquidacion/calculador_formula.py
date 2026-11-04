@@ -15,31 +15,20 @@ class CalculadorFormula:
         detalle,
         anios_antiguedad
     ):
-
+       
         variables = self.obtener_variables(detalle)
-
+        print(variables)
         variables["ANIOS_ANTIGUEDAD"] = anios_antiguedad
         variables["PORC_ANT"] = Decimal("0.01")
 
-        print("================================")
-        print("CONCEPTO:", item.codigo)
-        print("FORMULA:", item.formula)
-        print("VARIABLES:", variables)
-        print("================================")
-
         try:
 
-            item.haber = self.engine.calcular(
+            item.resultado = self.engine.calcular(
                 item.formula,
                 variables
             )
 
-            item.total = item.haber
-
-            print(
-                f"CALCULADO {item.codigo}:",
-                item.total
-            )
+            item.total = item.resultado
 
             return True
 
@@ -58,7 +47,7 @@ class CalculadorFormula:
 
         for item in detalle:
 
-            variables[item.codigo] = item.haber
+            variables[item.abreviatura] = item.haber
 
         return variables
 

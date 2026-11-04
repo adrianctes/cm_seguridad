@@ -24,9 +24,7 @@ class Legajo:
         banco_id: int  | None = None,
         banco: Banco  | None = None,
         cbu : str  | None = None,
-        fecha_ingreso_actual :  date | None = None,
-        modalidad_pago_id:  int| None = None,
-        valor_modalidad_pago: Decimal  | None = None,
+        fecha_ingreso_actual :  date | None = None
     ):
         self.id = id
         self.apellido = apellido
@@ -44,8 +42,7 @@ class Legajo:
         self.banco = banco
         self.cbu = cbu
         self.fecha_ingreso_actual = fecha_ingreso_actual
-        self.modalidad_pago_id = modalidad_pago_id
-        self.valor_modalidad_pago = valor_modalidad_pago
+       
 
     # 🔹 Regla de negocio
     def esta_activo(self) -> bool:

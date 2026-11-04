@@ -1,4 +1,5 @@
 from infrastructura.db.models.conceptos_model import ConceptoModel
+from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 
 class MySQLConceptoRepository:
@@ -13,11 +14,13 @@ class MySQLConceptoRepository:
                 nombre=data.nombre,
                 orden = data.orden,
                 clasificacion_concepto_id = data.clasificacion_concepto_id,
-                modalidad_pago_id = data.modalidad_pago_id,
                 tipo_calculo=data.tipo_calculo,
                 formula = data.formula,
                 activo=data.activo,
-                es_novedad=data.es_novedad
+                es_novedad=data.es_novedad,
+                abreviatura=data.abreviatura,
+                unidad_medida=data.unidad_medida,
+                secuencia=data.secuencia
             )
 
             self.db.add(model)
@@ -52,24 +55,53 @@ class MySQLConceptoRepository:
             )
 
         return query.all()
+
+    def listar_novedades(self, params: dict):
+    
+            query = self.db.query(ConceptoModel)
+    
+            activo = params.get("activo")
+            busqueda = params.get("busqueda")
+            es_novedad= True
+            query = query.filter(
+                                ConceptoModel.es_novedad== es_novedad
+                            )
+    
+            # FILTRO POR ACTIVO
+            if activo is not None:
+                query = query.filter(
+                    ConceptoModel.activo == activo
+                )
+    
+            # BÚSQUEDA POR CÓDIGO O NOMBRE
+            if busqueda:
+                busqueda = busqueda.strip()
+    
+                query = query.filter(
+                    (ConceptoModel.codigo.ilike(f"%{busqueda}%")) |
+                    (ConceptoModel.nombre.ilike(f"%{busqueda}%"))
+                )
+                
+    
+            return query.all()
+        
     
     def obtener(self, id: int):
         return self.db.query(ConceptoModel).filter_by(id=id).first()
-    
-   
-    def obtener_por_modalidad_pago(self,modalidad_pago_id: int, es_novedad:bool=False):
-        query = self.db.query(ConceptoModel)
 
-        if modalidad_pago_id is not None:
+    def obtener_ultimo_codigo(self) -> int:
+        stmt = select(func.max(ConceptoModel.codigo))
+        ultimo_codigo = self.db.execute(stmt).scalar_one()
 
-            query = query.filter(
-                ConceptoModel.modalidad_pago_id.in_(
-                    [modalidad_pago_id, 0]
-                ),
-                ConceptoModel.es_novedad == es_novedad
-            )
-
-        return query.all()
+        return ultimo_codigo or 1
+      
+    def obtener_secuencia_maxima(self):
+        # FOR UPDATE serializa la lectura del máximo frente a creaciones concurrentes
+        return (
+            self.db.query(func.max(ConceptoModel.secuencia))
+            .with_for_update()
+            .scalar()
+        )
 
     def actualizar(self, concepto_id: int, data):
         model = self.obtener(concepto_id)
@@ -95,7 +127,6 @@ class MySQLConceptoRepository:
         try:
             self.db.delete(model)
             self.db.commit()
-            return model
         except SQLAlchemyError as e:
             error_msg = str(e.orig).replace('"', '').replace(")", "").split(",")[1]
             raise Exception(error_msg)    

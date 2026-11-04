@@ -16,8 +16,9 @@ class LiquidacionBuilder:
             items.append(
                 ItemLiquidacion(
                     concepto_id=concepto.id,
-
-                    codigo=concepto.codigo,
+                    abreviatura = concepto.abreviatura,
+                    
+                    codigo=str(concepto.codigo),
                     concepto=concepto.nombre,
 
                    #clasificacion_id=clasificacion.id,
@@ -26,13 +27,14 @@ class LiquidacionBuilder:
                     clasificacion_tipo=clasificacion.tipo,
             
                     cantidad=lc.cantidad,
-                    valor=lc.valor,
+                    valor=lc.valor_unidad,
 
                     tipo_calculo=concepto.tipo_calculo,
                     formula=concepto.formula,
                     
                     es_novedad=False,
-                    orden=concepto.orden
+                    orden=concepto.orden or 0,
+                    secuencia=concepto.secuencia or 0
                 )
             )
 
@@ -46,8 +48,8 @@ class LiquidacionBuilder:
             items.append(
                 ItemLiquidacion(
                     concepto_id=concepto.id,
-
-                    codigo=concepto.codigo,
+                    abreviatura = concepto.abreviatura,
+                    codigo=str(concepto.codigo),
                     concepto=concepto.nombre,
 
                     #clasificacion_id=clasificacion.id,
@@ -62,7 +64,8 @@ class LiquidacionBuilder:
                     formula=concepto.formula,
 
                     es_novedad=True,
-                    orden=concepto.orden,
+                    orden=concepto.orden or 0,
+                    secuencia=concepto.secuencia or 0,
                     novedad_id = nov.id,
                 )
             )
