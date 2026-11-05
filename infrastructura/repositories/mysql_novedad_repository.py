@@ -130,9 +130,11 @@ class MySQLNovedadRepository(LegajoNovedadRepository):
         stmt = stmt.where(and_(*filtros))
 
         rows = self.db.execute(stmt).mappings().all()
+        print(rows)
    
         return rows
     # 🔹 Listar por legajo
+   
     def listar_por_legajo(self, legajo_id: int):
         modelos = (
             self.db.query(NovedadModel)

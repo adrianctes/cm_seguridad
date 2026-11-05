@@ -151,7 +151,7 @@ class LiquidacionDetalleVisualizacionResponse(BaseModel):
 
     concepto_id: int
 
-    codigo: str
+    codigo: int
 
     concepto: str
 

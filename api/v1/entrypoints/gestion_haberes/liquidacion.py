@@ -71,6 +71,7 @@ def crear_liquidacion(
     current_user=Depends(get_current_user)
 
 ):
+    print("crear")
     service = LiquidacionService(repo)
     try:
       print(data)
@@ -92,7 +93,7 @@ def obtener_por_id(
     repo=Depends(get_liquidacion_repository),
     current_user=Depends(get_current_user)
 ):
-
+    print(liquidacion_id)
     service = LiquidacionService(repo)
 
     try:
