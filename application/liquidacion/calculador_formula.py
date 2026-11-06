@@ -17,7 +17,6 @@ class CalculadorFormula:
     ):
        
         variables = self.obtener_variables(detalle)
-        print(variables)
         variables["ANIOS_ANTIGUEDAD"] = anios_antiguedad
         variables["PORC_ANT"] = Decimal("0.01")
 
@@ -27,7 +26,11 @@ class CalculadorFormula:
                 item.formula,
                 variables
             )
-
+            if item.clasificacion_tipo == "C":
+                item.haber =  item.resultado
+                       
+            elif item.clasificacion_tipo == "D":
+                    item.retencion =  item.resultado
             item.total = item.resultado
 
             return True

@@ -94,15 +94,15 @@ class LiquidacionService:
     def obtener_por_id(self, liquidacion_id: int):
 
         liquidacion = self.repo.obtener_por_id(liquidacion_id)
-
+     
         if not liquidacion:
             raise ValueError(
                 "No se encontró la liquidación."
             )
-
+       
         datos_fijos = liquidacion.datos_fijos_liquidacion
         legajo = liquidacion.legajo
-
+      
         return LiquidacionVisualizacionResponse(
 
             id=liquidacion.id,

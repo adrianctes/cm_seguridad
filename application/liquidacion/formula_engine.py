@@ -90,7 +90,7 @@ class FormulaEngine:
             variables
         )
 
-        print("EXPRESIÓN RESUELTA:", expresion)
+       # print("EXPRESIÓN RESUELTA:", expresion)
 
         # -----------------------------------------
         # 2. Reemplazar variables
@@ -104,7 +104,7 @@ class FormulaEngine:
                 expresion
             )
 
-        print("EXPRESIÓN FINAL:", expresion)
+        #print("EXPRESIÓN FINAL:", expresion)
 
         # -----------------------------------------
         # 3. Evaluar
@@ -123,8 +123,8 @@ class FormulaEngine:
         variables: dict
     ) -> str:
 
-        print("FORMULA:", formula)
-        print("VARIABLES:", variables)
+        #print("FORMULA:", formula)
+        #print("VARIABLES:", variables)
 
         patron = r"\[([A-Za-z0-9_]+(?:\|[A-Za-z0-9_]+)+)\]"
 

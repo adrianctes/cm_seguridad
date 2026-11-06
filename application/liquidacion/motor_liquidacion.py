@@ -29,12 +29,12 @@ class MotorLiquidacion:
 
       
 
-        for item in detalle:
+        '''for item in detalle:
             print(
                 item.codigo,
                 item.haber,
                 item.total
-            )
+            )'''
 
 
         return detalle

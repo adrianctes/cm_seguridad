@@ -87,9 +87,11 @@ class ProcesoLiquidacionService:
             ANIOS_ANTIGUEDAD
         )
 
-        return self.resultado_builder.construir(
+        result= self.resultado_builder.construir(
             items_calculados
         )
+        #print(result)
+        return result
         
             
    
