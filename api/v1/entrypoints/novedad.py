@@ -10,7 +10,7 @@ router = APIRouter(prefix="/novedades")
 
 
 # 🔹 Crear
-@router.post("", response_model=NovedadResponse)
+@router.post("", status_code=200)
 def crear(
     data: NovedadCreate,
     repo =   Depends(get_novedad_repository)
@@ -19,7 +19,7 @@ def crear(
     service = NovedadService(repo)
     try:
   
-      return service.crear(data)
+        service.crear(data)
     except Exception as ex:
         raise HTTPException(
             status_code=422,
